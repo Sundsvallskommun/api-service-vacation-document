@@ -1,0 +1,13 @@
+spring:
+  main:
+    banner-mode: off
+
+integration:
+  party:
+    base-url: someBaseUrl
+    oauth2:
+      token-url: someTokenUrl
+      client-id: someClientId
+      client-secret: someClientSecret
+    connect-timeout-in-seconds: 6
+    read-timeout-in-seconds: 12

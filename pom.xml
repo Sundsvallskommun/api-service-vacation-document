@@ -13,6 +13,8 @@
 	<name>api-service-vacation-document</name>
 
 	<properties>
+		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+		<generated-sources-java-path>src/main/java</generated-sources-java-path>
 	</properties>
 
 	<dependencies>
@@ -22,5 +24,69 @@
 			<artifactId>dept44-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Framework -->
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-feign</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<configuration>
+					<output>${generated-sources-path}</output>
+					<generatorName>spring</generatorName>
+					<generateApis>false</generateApis>
+					<configOptions>
+						<sourceFolder>${generated-sources-java-path}</sourceFolder>
+						<generateSupportingFiles>false</generateSupportingFiles>
+						<generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+						<generatePom>false</generatePom>
+						<library>spring-boot</library>
+						<dateLibrary>java8</dateLibrary>
+						<apiPackage>generated</apiPackage>
+						<openApiNullable>false</openApiNullable>
+						<useSwaggerUi>false</useSwaggerUi>
+						<useBeanValidation>true</useBeanValidation>
+						<useSwaggerAnnotations>true</useSwaggerAnnotations>
+						<hideGenerationTimestamp>true</hideGenerationTimestamp>
+						<interfaceOnly>true</interfaceOnly>
+						<useJakartaEe>true</useJakartaEe>
+						<useSpringBoot3>true</useSpringBoot3>
+					</configOptions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>party-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/integrations/party-api.yml</inputSpec>
+							<configOptions>
+								<modelPackage>generated.se.sundsvall.party</modelPackage>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/generated/**</exclude>
+						<exclude>**/se/sundsvall/vacationdocument/Application*</exclude>
+						<exclude>**/se/sundsvall/vacationdocument/configuration/**/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
