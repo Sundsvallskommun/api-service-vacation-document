@@ -1,7 +1,6 @@
 package se.sundsvall.vacationdocument.integration.party;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static se.sundsvall.vacationdocument.integration.party.PartyIntegration.CLIENT_ID;
 
 import java.util.List;
 
@@ -17,11 +16,13 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 
 @Import(FeignConfiguration.class)
-@EnableConfigurationProperties(PartyIntegrationProperties.class)
-class PartyIntegrationConfiguration {
+@EnableConfigurationProperties(PartyClientProperties.class)
+class PartyClientConfiguration {
+
+    static final String CLIENT_ID = "party";
 
     @Bean
-    FeignBuilderCustomizer feignBuilderCustomizer(final PartyIntegrationProperties properties) {
+    FeignBuilderCustomizer feignBuilderCustomizer(final PartyClientProperties properties) {
         return FeignMultiCustomizer.create()
             .withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID, List.of(NOT_FOUND.value())))
             .withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration.withRegistrationId(CLIENT_ID)

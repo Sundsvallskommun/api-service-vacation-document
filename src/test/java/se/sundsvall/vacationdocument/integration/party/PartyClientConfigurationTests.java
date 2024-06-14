@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.vacationdocument.integration.party.PartyIntegration.CLIENT_ID;
+import static se.sundsvall.vacationdocument.integration.party.PartyClientConfiguration.CLIENT_ID;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -26,7 +26,7 @@ import se.sundsvall.vacationdocument.Application;
 
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("junit")
-class PartyIntegrationConfigurationTests {
+class PartyClientConfigurationTests {
 
     @Mock
     private ClientRegistration mockClientRegistration;
@@ -44,11 +44,11 @@ class PartyIntegrationConfigurationTests {
     private ArgumentCaptor<ProblemErrorDecoder> errorDecoderCaptor;
 
     @Autowired
-    private PartyIntegrationProperties mockProperties;
+    private PartyClientProperties mockProperties;
 
     @Test
     void testFeignBuilderMultiCustomizer() {
-        var configuration = new PartyIntegrationConfiguration();
+        var configuration = new PartyClientConfiguration();
 
         try (var mockFeignMultiCustomizer = mockStatic(FeignMultiCustomizer.class);
                 var staticMockClientRegistration = mockStatic(ClientRegistration.class)) {

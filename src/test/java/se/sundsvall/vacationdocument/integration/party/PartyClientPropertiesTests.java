@@ -11,10 +11,10 @@ import se.sundsvall.vacationdocument.Application;
 
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("junit")
-class PartyIntegrationPropertiesTests {
+class PartyClientPropertiesTests {
 
     @Autowired
-    private PartyIntegrationProperties properties;
+    private PartyClientProperties properties;
 
     @Test
     void verifyProperties() {

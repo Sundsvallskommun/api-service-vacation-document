@@ -12,7 +12,7 @@ import se.sundsvall.vacationdocument.integration.Oauth2;
 
 @Validated
 @ConfigurationProperties(prefix = "integration.party")
-record PartyIntegrationProperties(
+record PartyClientProperties(
 
     @NotBlank
     String baseUrl,

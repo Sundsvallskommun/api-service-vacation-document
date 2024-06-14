@@ -2,7 +2,7 @@ package se.sundsvall.vacationdocument.integration.party;
 
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
-import static se.sundsvall.vacationdocument.integration.party.PartyIntegration.CLIENT_ID;
+import static se.sundsvall.vacationdocument.integration.party.PartyClientConfiguration.CLIENT_ID;
 
 import java.util.Optional;
 
@@ -14,10 +14,11 @@ import generated.se.sundsvall.party.PartyType;
 
 @FeignClient(
     name = CLIENT_ID,
-    configuration = PartyIntegrationConfiguration.class,
-    url = "${integration.party.base-url}"
+    configuration = PartyClientConfiguration.class,
+    url = "${integration.party.base-url}",
+    dismiss404 = true
 )
-interface PartyClient {
+public interface PartyClient {
 
     @GetMapping(
         path = "/{type}/{legalId}/partyId",
