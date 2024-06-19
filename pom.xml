@@ -13,6 +13,9 @@
 	<name>api-service-vacation-document</name>
 
 	<properties>
+		<xsoup.version>0.3.7</xsoup.version>
+		<jilt.version>1.6</jilt.version>
+
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
 	</properties>
@@ -30,10 +33,33 @@
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-feign</artifactId>
 		</dependency>
+
+		<!-- Other -->
+		<dependency>
+			<groupId>us.codecraft</groupId>
+			<artifactId>xsoup</artifactId>
+			<version>${xsoup.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cc.jilt</groupId>
+			<artifactId>jilt</artifactId>
+			<version>${jilt.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>xml</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
@@ -98,8 +124,34 @@
 						<exclude>**/generated/**</exclude>
 						<exclude>**/se/sundsvall/vacationdocument/Application*</exclude>
 						<exclude>**/se/sundsvall/vacationdocument/configuration/**/**</exclude>
+						<!--
+							Exclude Jilt builders for now, since Jacoco won't pick up the @Generated
+							annotation on them for some reason
+						-->
+						<exclude>**/se/sundsvall/vacationdocument/**/*Builder*</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>add-generated-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${generated-sources-path}/annotations</source>
+								<source>${generated-sources-path}/${generated-sources-java-path}</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

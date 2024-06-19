@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<FlowInstance xmlns="http://www.oeplatform.org/version/2.0/schemas/flowinstance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.oeplatform.org/version/2.0/schemas/flowinstance schema-466.xsd">
+    <Header>
+        <Flow>
+            <FamilyID>999</FamilyID>
+            <Version>8</Version>
+            <FlowID>466</FlowID>
+            <Name><![CDATA[Semesterväxling]]></Name>
+        </Flow>
+        <FlowInstanceID>206833</FlowInstanceID>
+        <Status>
+            <ID>3618</ID>
+            <Name><![CDATA[Godkänd av chef]]></Name>
+        </Status>
+        <Poster>
+            <Firstname><![CDATA[Test]]></Firstname>
+            <Lastname><![CDATA[Testsson]]></Lastname>
+            <Email><![CDATA[test.testsson@sundsvall.se]]></Email>
+            <ID>203960</ID>
+        </Poster>
+        <Owner>
+            <Firstname><![CDATA[Test]]></Firstname>
+            <Lastname><![CDATA[Testsson]]></Lastname>
+            <Email><![CDATA[test.testsson@sundsvall.se]]></Email>
+            <ID>203960</ID>
+        </Owner>
+        <Posted>2024-05-22T14:28:28</Posted>
+        <FirstSubmitted>2024-05-22T14:28:28</FirstSubmitted>
+        <LastSubmitted>2024-05-22T14:28:28</LastSubmitted>
+    </Header>
+    <Values>
+        <Medarbetaruppgifter>
+            <QueryID>16505</QueryID>
+            <Name><![CDATA[Medarbetaruppgifter]]></Name>
+            <firstname><![CDATA[Test]]></firstname>
+            <lastname><![CDATA[Testsson]]></lastname>
+            <email><![CDATA[test.testsson@sundsvall.se]]></email>
+            <mobilePhone><![CDATA[07000000]]></mobilePhone>
+            <citizenIdentifier><![CDATA[199002231638]]></citizenIdentifier>
+            <title><![CDATA[Arbetare]]></title>
+            <organization><![CDATA[Avdelning 44]]></organization>
+        </Medarbetaruppgifter>
+        <Manager>
+            <QueryID>16506</QueryID>
+            <Name><![CDATA[Närmsta chef]]></Name>
+            <firstname><![CDATA[Chef]]></firstname>
+            <lastname><![CDATA[Chefsson]]></lastname>
+            <username><![CDATA[che18che]]></username>
+            <title><![CDATA[Chef]]></title>
+            <organization><![CDATA[Avdelning 44]]></organization>
+        </Manager>
+        <info_1>
+            <QueryID>16507</QueryID>
+            <Name><![CDATA[Villkor]]></Name>
+            <Value>Jag har läst och förstått ovanstående information</Value>
+        </info_1>
+        <info_2>
+            <QueryID>16508</QueryID>
+            <Name><![CDATA[Minskad årsinkomst]]></Name>
+            <Value>Jag har läst och förstått ovanstående information</Value>
+        </info_2>
+        <info_3>
+            <QueryID>16509</QueryID>
+            <Name><![CDATA[Antal dagar]]></Name>
+            <Value>Jag har läst och förstått ovanstående information</Value>
+        </info_3>
+        <info_4>
+            <QueryID>16510</QueryID>
+            <Name><![CDATA[Semesterledighet]]></Name>
+            <Value>Jag har läst och förstått ovanstående information</Value>
+        </info_4>
+        <info_5>
+            <QueryID>16513</QueryID>
+            <Name><![CDATA[Frånvaro]]></Name>
+            <Value>Jag har läst och förstått ovanstående information</Value>
+        </info_5>
+        <info_6>
+            <QueryID>16514</QueryID>
+            <Name><![CDATA[Löneskuld]]></Name>
+            <Value>Jag har läst och förstått ovanstående information</Value>
+        </info_6>
+    </Values>
+</FlowInstance>

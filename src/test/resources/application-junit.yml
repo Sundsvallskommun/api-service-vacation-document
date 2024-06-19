@@ -3,6 +3,7 @@ spring:
     banner-mode: off
 
 integration:
+  # Party
   party:
     base-url: someBaseUrl
     oauth2:
@@ -11,6 +12,8 @@ integration:
       client-secret: someClientSecret
     connect-timeout-in-seconds: 6
     read-timeout-in-seconds: 12
+
+  # Templating
   templating:
     base-url: someBaseUrl
     oauth2:
@@ -19,3 +22,13 @@ integration:
       client-secret: someClientSecret
     connect-timeout-in-seconds: 3
     read-timeout-in-seconds: 15
+
+  # OpenE
+  open-e:
+    base-url: someBaseUrl
+    username: someUsername
+    password: somePassword
+    family-id: someFamilyId
+    approved-by-manager-status-id: someStatusId
+    connect-timeout-in-seconds: 7
+    read-timeout-in-seconds: 11
