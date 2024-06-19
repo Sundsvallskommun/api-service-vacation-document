@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<FlowInstances>
+    <FlowInstance>
+        <flowInstanceID>206833</flowInstanceID>
+        <added>2024-05-22 14:28</added>
+        <firstSubmitted>2024-05-22 14:28</firstSubmitted>
+        <fullyPopulated>true</fullyPopulated>
+        <stepID>1161</stepID>
+        <lastStatusChange>2024-05-22 14:28</lastStatusChange>
+        <lastEventAdded>2024-05-22 14:28</lastEventAdded>
+        <profileID>1</profileID>
+        <userDescription>Semesterväxling för medarbetare i kommunen</userDescription>
+        <managerDescription>199002231638</managerDescription>
+        <remote>false</remote>
+        <addedInMilliseconds>1716380908000</addedInMilliseconds>
+        <firstSubmittedInMilliseconds>1716380908000</firstSubmittedInMilliseconds>
+        <lastStatusChangeInMilliseconds>1716380908000</lastStatusChangeInMilliseconds>
+        <poster>
+            <user>
+                <userID>203960</userID>
+                <username>tes23tes</username>
+                <firstname>Test</firstname>
+                <lastname>Testsson</lastname>
+                <email>test.testsson@sundsvall.se</email>
+                <admin>false</admin>
+                <enabled>true</enabled>
+                <lastLogin>2024-05-22 14:26</lastLogin>
+                <lastLoginInMilliseconds>1716380793000</lastLoginInMilliseconds>
+                <added>2021-12-11 02:36</added>
+                <isMutable>true</isMutable>
+                <hasFormProvider>true</hasFormProvider>
+            </user>
+        </poster>
+    </FlowInstance>
+    <FlowInstance>
+        <flowInstanceID>206832</flowInstanceID>
+        <added>2024-05-21 16:00</added>
+        <firstSubmitted>2024-05-21 16:00</firstSubmitted>
+        <fullyPopulated>true</fullyPopulated>
+        <stepID>1161</stepID>
+        <lastStatusChange>2024-05-21 16:01</lastStatusChange>
+        <lastEventAdded>2024-05-21 16:01</lastEventAdded>
+        <profileID>1</profileID>
+        <userDescription>Semesterväxling för medarbetare i kommunen</userDescription>
+        <managerDescription>199002231638</managerDescription>
+        <remote>false</remote>
+        <addedInMilliseconds>1716300037000</addedInMilliseconds>
+        <firstSubmittedInMilliseconds>1716300037000</firstSubmittedInMilliseconds>
+        <lastStatusChangeInMilliseconds>1716300065000</lastStatusChangeInMilliseconds>
+        <poster>
+            <user>
+                <userID>205182</userID>
+                <username>tes24tes</username>
+                <firstname>Test</firstname>
+                <lastname>Testberg</lastname>
+                <email>test.testberg@sundsvall.se</email>
+                <admin>false</admin>
+                <enabled>true</enabled>
+                <lastLogin>2024-05-22 14:26</lastLogin>
+                <lastLoginInMilliseconds>1716380793000</lastLoginInMilliseconds>
+                <added>2021-12-11 02:36</added>
+                <isMutable>true</isMutable>
+                <hasFormProvider>true</hasFormProvider>
+            </user>
+        </poster>
+    </FlowInstance>
+    <FlowInstance>
+        <flowInstanceID>206830</flowInstanceID>
+        <added>2024-05-21 14:43</added>
+        <firstSubmitted>2024-05-21 14:43</firstSubmitted>
+        <fullyPopulated>true</fullyPopulated>
+        <stepID>1159</stepID>
+        <lastStatusChange>2024-05-21 14:43</lastStatusChange>
+        <lastEventAdded>2024-05-21 14:43</lastEventAdded>
+        <profileID>1</profileID>
+        <userDescription>Semesterväxling för medarbetare i kommunen</userDescription>
+        <managerDescription>196307247921</managerDescription>
+        <remote>false</remote>
+        <addedInMilliseconds>1716295430000</addedInMilliseconds>
+        <firstSubmittedInMilliseconds>1716295430000</firstSubmittedInMilliseconds>
+        <lastStatusChangeInMilliseconds>1716295430000</lastStatusChangeInMilliseconds>
+        <poster>
+            <user>
+                <userID>289567</userID>
+                <username>tes21tes</username>
+                <firstname>Test</firstname>
+                <lastname>von Teststolpe</lastname>
+                <email>test.von.teststolpe@sundsvall.se</email>
+                <admin>false</admin>
+                <enabled>true</enabled>
+                <lastLogin>2024-06-18 15:09</lastLogin>
+                <lastLoginInMilliseconds>1718716167000</lastLoginInMilliseconds>
+                <added>2020-02-29 01:09</added>
+                <isMutable>true</isMutable>
+                <hasFormProvider>true</hasFormProvider>
+            </user>
+        </poster>
+    </FlowInstance>
+</FlowInstances>

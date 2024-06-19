@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<FlowInstance xmlns="http://www.oeplatform.org/version/2.0/schemas/flowinstance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.oeplatform.org/version/2.0/schemas/flowinstance schema-465.xsd">
+    <Header>
+        <Flow>
+            <FamilyID>999</FamilyID>
+            <Version>7</Version>
+            <FlowID>465</FlowID>
+            <Name><![CDATA[Semesterväxling]]></Name>
+        </Flow>
+        <FlowInstanceID>206830</FlowInstanceID>
+        <Status>
+            <ID>3966</ID>
+            <Name><![CDATA[Väntar på godkännande av chef]]></Name>
+        </Status>
+        <Poster>
+            <Firstname><![CDATA[Test]]></Firstname>
+            <Lastname><![CDATA[von Teststolpe]]></Lastname>
+            <Email><![CDATA[test.von.teststolpe@sundsvall.se]]></Email>
+            <ID>206830</ID>
+        </Poster>
+        <Owner>
+            <Firstname><![CDATA[Test]]></Firstname>
+            <Lastname><![CDATA[von Teststolpe]]></Lastname>
+            <Email><![CDATA[test.von.teststolpe@sundsvall.se]]></Email>
+            <ID>206830</ID>
+        </Owner>
+        <Posted>2024-05-21T14:43:50</Posted>
+        <FirstSubmitted>2024-05-21T14:43:50</FirstSubmitted>
+        <LastSubmitted>2024-05-21T14:43:50</LastSubmitted>
+    </Header>
+    <Values>
+        <Medarbetaruppgifter>
+            <QueryID>16493</QueryID>
+            <Name><![CDATA[Medarbetaruppgifter]]></Name>
+            <firstname><![CDATA[Test]]></firstname>
+            <lastname><![CDATA[von Teststolpe]]></lastname>
+            <email><![CDATA[test.von.teststolpe@sundsvall.se]]></email>
+            <phone><![CDATA[060000000]]></phone>
+            <mobilePhone><![CDATA[0700000000]]></mobilePhone>
+            <citizenIdentifier><![CDATA[197912242398]]></citizenIdentifier>
+            <title><![CDATA[Administratör]]></title>
+            <organization><![CDATA[Avdelning 44]]></organization>
+        </Medarbetaruppgifter>
+        <Manager>
+            <QueryID>16494</QueryID>
+            <Name><![CDATA[Närmsta chef]]></Name>
+            <firstname><![CDATA[Chef]]></firstname>
+            <lastname><![CDATA[Chefsson]]></lastname>
+            <username><![CDATA[che18che]]></username>
+            <title><![CDATA[Chef]]></title>
+            <organization><![CDATA[Avdelning 44]]></organization>
+        </Manager>
+    </Values>
+</FlowInstance>
