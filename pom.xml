@@ -14,7 +14,7 @@
 
 	<properties>
 		<xsoup.version>0.3.7</xsoup.version>
-		<jilt.version>1.6</jilt.version>
+		<jilt.version>1.6.1</jilt.version>
 
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
