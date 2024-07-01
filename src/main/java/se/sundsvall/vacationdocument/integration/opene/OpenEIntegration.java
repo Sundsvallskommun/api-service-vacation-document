@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpenEIntegration {
 
+    private static final String DESCRIPTION_PATH = "/FlowInstance/Header/Flow/Name";
     private static final String STATUS_ID_PATH = "/FlowInstance/Header/Status/ID";
     private static final String DOCUMENT_ID_PATH = "/FlowInstances/FlowInstance/flowInstanceID";
     private static final String EMPLOYEE_INFO_PATH = "/FlowInstance/Values/Medarbetaruppgifter";
@@ -56,6 +57,7 @@ public class OpenEIntegration {
 
     OpenEDocument mapToDocument(final byte[] documentXml) {
         return newDocument()
+            .withName(getString(documentXml, DESCRIPTION_PATH))
             .withEmployeeInformation(newEmployeeInformation()
                 .withFirstName(getString(documentXml, EMPLOYEE_INFO_PATH.concat("/firstname")))
                 .withLastName(getString(documentXml, EMPLOYEE_INFO_PATH.concat("/lastname")))

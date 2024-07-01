@@ -11,6 +11,7 @@ class OpenEDocumentTests {
 
     @Test
     void testConstruction() {
+        var name = "someName";
         var firstName = "someFirstName";
         var lastName = "someLastName";
         var emailAddress = "someEmailAddress";
@@ -22,6 +23,7 @@ class OpenEDocumentTests {
         var username = "someUsername";
 
         var document = newDocument()
+            .withName(name)
             .withEmployeeInformation(newEmployeeInformation()
                 .withFirstName(firstName)
                 .withLastName(lastName)
@@ -41,6 +43,7 @@ class OpenEDocumentTests {
                 .build())
             .build();
 
+        assertThat(document.name()).isEqualTo(name);
         assertThat(document.employeeInformation()).isNotNull().satisfies(employeeInformation -> {
             assertThat(employeeInformation.firstName()).isEqualTo(firstName);
             assertThat(employeeInformation.lastName()).isEqualTo(lastName);
@@ -51,7 +54,6 @@ class OpenEDocumentTests {
             assertThat(employeeInformation.jobTitle()).isEqualTo(jobTitle);
             assertThat(employeeInformation.organization()).isEqualTo(organization);
         });
-
         assertThat(document.managerInformation()).isNotNull().satisfies(managerInformation -> {
             assertThat(managerInformation.username()).isEqualTo(username);
             assertThat(managerInformation.firstName()).isEqualTo(firstName);

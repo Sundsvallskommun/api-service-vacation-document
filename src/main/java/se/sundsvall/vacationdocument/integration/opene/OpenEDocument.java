@@ -4,6 +4,7 @@ import org.jilt.Builder;
 
 @Builder(setterPrefix = "with", factoryMethod = "newDocument")
 public record OpenEDocument(
+        String name,
         EmployeeInformation employeeInformation,
         ManagerInformation managerInformation) {
 
