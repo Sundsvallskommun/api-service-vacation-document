@@ -1,6 +1,7 @@
 package se.sundsvall.vacationdocument.integration.opene;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.function.Predicate.not;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -62,7 +63,9 @@ class OpenEIntegrationTests {
 
         var documents = openEIntegration.getDocuments(fromDate, toDate);
 
-        assertThat(documents).hasSize(2);
+        assertThat(documents).hasSize(3);
+        assertThat(documents.stream().filter(OpenEDocument::approvedByManager)).hasSize(2);
+        assertThat(documents.stream().filter(not(OpenEDocument::approvedByManager))).hasSize(1);
 
         verify(mockProperties).familyId();
         verify(mockProperties, times(3)).approvedByManagerStatusId();

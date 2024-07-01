@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpenEIntegration {
 
+    private static final String DOCUMENTS_ID_PATH = "/FlowInstances/FlowInstance/flowInstanceID";
+    private static final String DOCUMENT_ID_PATH = "/FlowInstance/Header/FlowInstanceID";
+    private static final String DESCRIPTION_PATH = "/FlowInstance/Header/Flow/Name";
     private static final String STATUS_ID_PATH = "/FlowInstance/Header/Status/ID";
-    private static final String DOCUMENT_ID_PATH = "/FlowInstances/FlowInstance/flowInstanceID";
     private static final String EMPLOYEE_INFO_PATH = "/FlowInstance/Values/Medarbetaruppgifter";
     private static final String MANAGER_INFO_PATH = "/FlowInstance/Values/Manager";
 
@@ -30,24 +32,16 @@ public class OpenEIntegration {
         return getDocumentIds(fromDate, toDate).stream()
             // Get the errand
             .map(client::getErrand)
-            // Skip any documents whose status isn't "approved by manager" as configured
-            .filter(this::isApprovedByManager)
             // Map the XML to an OpenE document
             .map(this::mapToDocument)
             .toList();
-    }
-
-    boolean isApprovedByManager(final byte[] documentXml) {
-        var statusId = getString(documentXml, STATUS_ID_PATH);
-
-        return properties.approvedByManagerStatusId().equals(statusId);
     }
 
     List<String> getDocumentIds(final String fromDate, final String toDate) {
         // Get the document list from OpenE
         var documentsXml = client.getErrands(properties.familyId(), fromDate, toDate);
         // Extract the document id:s
-        var result = evaluateXPath(documentsXml, DOCUMENT_ID_PATH);
+        var result = evaluateXPath(documentsXml, DOCUMENTS_ID_PATH);
         // Trim the errand id:s, just to be safe(r)
         return result.eachText().stream()
             .map(String::trim)
@@ -55,7 +49,12 @@ public class OpenEIntegration {
     }
 
     OpenEDocument mapToDocument(final byte[] documentXml) {
+        var statusId = getString(documentXml, STATUS_ID_PATH);
+
         return newDocument()
+            .withId(getString(documentXml, DOCUMENT_ID_PATH))
+            .withName(getString(documentXml, DESCRIPTION_PATH))
+            .withApprovedByManager(properties.approvedByManagerStatusId().equals(statusId))
             .withEmployeeInformation(newEmployeeInformation()
                 .withFirstName(getString(documentXml, EMPLOYEE_INFO_PATH.concat("/firstname")))
                 .withLastName(getString(documentXml, EMPLOYEE_INFO_PATH.concat("/lastname")))
