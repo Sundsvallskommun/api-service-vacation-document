@@ -33,7 +33,7 @@ public class DbIntegration {
     }
 
     public boolean existsById(final String documentId) {
-        var count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_ID, Map.of("document_id", documentId), Long.class);
+        var count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_ID, Map.of(DOCUMENT_ID, documentId), Long.class);
 
         if (count == null) {
             throw new DataRetrievalFailureException("Unable to check if document exists");
