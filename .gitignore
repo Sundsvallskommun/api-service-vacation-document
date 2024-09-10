@@ -50,4 +50,6 @@ hs_err_pid*
 
 # Spring
 application-default.properties
+application-default.yml
+application-default.yaml
 

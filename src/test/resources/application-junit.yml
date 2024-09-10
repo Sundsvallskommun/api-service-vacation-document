@@ -1,6 +1,9 @@
 spring:
   main:
     banner-mode: off
+  datasource:
+    url: jdbc:tc:mariadb:10.6.12:///?user=root&password=
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
 
 integration:
   # Party
