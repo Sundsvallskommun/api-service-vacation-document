@@ -1,6 +1,8 @@
 spring:
   application:
     name: api-vacation-document
+  flyway:
+    enabled: true
 
 openapi:
   name: ${spring.application.name}
