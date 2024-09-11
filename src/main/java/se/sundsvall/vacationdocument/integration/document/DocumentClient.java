@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 
@@ -22,11 +23,12 @@ import generated.se.sundsvall.document.DocumentCreateRequest;
 public interface DocumentClient {
 
     @PostMapping(
-        path = "/documents",
+        path = "/{municipalityId}/documents",
         consumes = { MULTIPART_FORM_DATA_VALUE },
         produces = { ALL_VALUE, APPLICATION_PROBLEM_JSON_VALUE }
     )
     ResponseEntity<Void> createDocument(
+        @PathVariable("municipalityId") String municipalityId,
         @RequestPart("document") DocumentCreateRequest document,
         @RequestPart("documentFiles") List<DocumentMultipartFile> documentFiles);
 }

@@ -28,13 +28,15 @@ integration:
 
   # OpenE
   open-e:
-    base-url: someBaseUrl
-    username: someUsername
-    password: somePassword
-    family-id: someFamilyId
-    approved-by-manager-status-id: someStatusId
-    connect-timeout-in-seconds: 7
-    read-timeout-in-seconds: 11
+    environments:
+      1984:
+        base-url: someBaseUrl
+        username: someUsername
+        password: somePassword
+        family-id: someFamilyId
+        approved-by-manager-status-id: someStatusId
+        connect-timeout-in-seconds: 7
+        read-timeout-in-seconds: 11
 
   # Document
   document:

@@ -9,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +31,11 @@ class OpenEIntegrationTests {
 
     @Mock
     private OpenEClientProperties mockProperties;
+    @Mock
+    private OpenEClientProperties.OpenEEnvironment mockEnvironment;
 
+    @Mock
+    private OpenEClientFactory mockClientFactory;
     @Mock
     private OpenEClient mockClient;
 
@@ -49,27 +55,32 @@ class OpenEIntegrationTests {
 
     @Test
     void testGetDocuments() {
+        var municipalityId = "1984";
         var familyId = "999";
         var fromDate = "2024-05-01";
         var toDate = "2024-06-16";
 
-        when(mockProperties.familyId()).thenReturn(familyId);
-        when(mockProperties.approvedByManagerStatusId()).thenReturn("3618");
+        when(mockProperties.environments()).thenReturn(Map.of(municipalityId, mockEnvironment));
+        when(mockEnvironment.familyId()).thenReturn(familyId);
+        when(mockEnvironment.approvedByManagerStatusId()).thenReturn("3618");
 
+        when(mockClientFactory.getClient(municipalityId)).thenReturn(mockClient);
         when(mockClient.getErrands(familyId, fromDate, toDate)).thenReturn(documentsXml);
         when(mockClient.getErrand("206830")).thenReturn(documentXml_206830);
         when(mockClient.getErrand("206832")).thenReturn(documentXml_206832);
         when(mockClient.getErrand("206833")).thenReturn(documentXml_206833);
 
-        var documents = openEIntegration.getDocuments(fromDate, toDate);
+        var documents = openEIntegration.getDocuments(municipalityId, fromDate, toDate);
 
         assertThat(documents).hasSize(3);
         assertThat(documents.stream().filter(OpenEDocument::approvedByManager)).hasSize(2);
         assertThat(documents.stream().filter(not(OpenEDocument::approvedByManager))).hasSize(1);
 
-        verify(mockProperties).familyId();
-        verify(mockProperties, times(3)).approvedByManagerStatusId();
-        verifyNoMoreInteractions(mockProperties);
+        verify(mockClientFactory, times(2)).getClient(municipalityId);
+        verify(mockProperties, times(4)).environments();
+        verify(mockEnvironment).familyId();
+        verify(mockEnvironment, times(3)).approvedByManagerStatusId();
+        verifyNoMoreInteractions(mockClientFactory, mockProperties, mockEnvironment);
         verify(mockClient).getErrands(familyId, fromDate, toDate);
         verify(mockClient, times(3)).getErrand(anyString());
         verifyNoMoreInteractions(mockClient);

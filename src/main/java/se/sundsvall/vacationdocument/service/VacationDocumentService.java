@@ -47,26 +47,26 @@ class VacationDocumentService {
         this.partyClient = partyClient;
     }
 
-    void processDocuments(final LocalDate fromDate, final LocalDate toDate) {
+    void processDocuments(final String municipalityId, final LocalDate fromDate, final LocalDate toDate) {
         // Get OpenE documents in the given date range
-        var openEDocuments = openEIntegration.getDocuments(fromDate.format(ISO_LOCAL_DATE), toDate.format(ISO_LOCAL_DATE));
+        var openEDocuments = openEIntegration.getDocuments(municipalityId, fromDate.format(ISO_LOCAL_DATE), toDate.format(ISO_LOCAL_DATE));
 
         for (var openEDocument : openEDocuments) {
             var documentId = openEDocument.id();
 
             // Skip the OpenE document if it's already processed
-            if (dbIntegration.existsById(documentId)) {
-                LOG.info("Skipping previously processed document {}", documentId);
+            if (dbIntegration.existsById(municipalityId, documentId)) {
+                LOG.info("Skipping previously processed document {} (municipalityId: {})", documentId, municipalityId);
 
                 continue;
             }
 
             // Save the initial local document
-            dbIntegration.saveDocument(documentId, openEDocument.approvedByManager() ? PROCESSING : NOT_APPROVED);
+            dbIntegration.saveDocument(documentId, municipalityId, openEDocument.approvedByManager() ? PROCESSING : NOT_APPROVED);
 
             // Bail out if the OpenE document isn't approved by manager
             if (!openEDocument.approvedByManager()) {
-                LOG.info("Document {} is NOT approved by manager. Skipping further processing", documentId);
+                LOG.info("Document {} is NOT approved by manager. Skipping further processing (municipalityId: {})", documentId, municipalityId);
 
                 continue;
             }
@@ -76,18 +76,18 @@ class VacationDocumentService {
                     .identifier("someIdentifier")
                     .parameters(mapToRenderRequestParameters(openEDocument));
                 // Render the OpenE document as a PDF
-                var renderResponse = templatingClient.renderPdf(renderRequest);
+                var renderResponse = templatingClient.renderPdf(municipalityId, renderRequest);
                 var output = renderResponse.getOutput();
                 var pdfData = Base64.getDecoder().decode(output);
 
                 // Translate the document SSN to a party-id
-                var partyId = partyClient.getPartyId(PRIVATE, openEDocument.employeeInformation().ssn());
+                var partyId = partyClient.getPartyId(municipalityId, PRIVATE, openEDocument.employeeInformation().ssn());
 
                 if (partyId.isEmpty()) {
-                    LOG.warn("Unable to get party id for SSN {}", openEDocument.employeeInformation().ssn());
+                    LOG.warn("Unable to get party id for SSN {} (municipalityId: {})", openEDocument.employeeInformation().ssn(), municipalityId);
 
                     // Update the local document
-                    dbIntegration.updateDocument(documentId, FAILED, "Unable to get party id");
+                    dbIntegration.updateDocument(documentId, municipalityId, FAILED, "Unable to get party id");
 
                     continue;
                 }
@@ -98,17 +98,17 @@ class VacationDocumentService {
                 var documentMultipartFile = new DocumentMultipartFile(filename, pdfData);
 
                 // Create the document
-                documentClient.createDocument(documentCreateRequest, List.of(documentMultipartFile));
+                documentClient.createDocument(municipalityId, documentCreateRequest, List.of(documentMultipartFile));
 
-                LOG.info("Created document {} ({})", documentId, filename);
+                LOG.info("Created document {} - {} (municipalityId: {})", documentId, filename, municipalityId);
 
                 // Update the local document
-                dbIntegration.updateDocument(documentId, DONE);
+                dbIntegration.updateDocument(documentId, municipalityId, DONE);
             } catch (Exception e) {
-                LOG.warn("Unable to create document {}", openEDocument.id(), e);
+                LOG.warn("Unable to create document {} (municipalityId: {})", openEDocument.id(), municipalityId, e);
 
                 // Update the local document
-                dbIntegration.updateDocument(documentId, FAILED, e.getMessage());
+                dbIntegration.updateDocument(documentId, municipalityId, FAILED, e.getMessage());
             }
         }
     }
