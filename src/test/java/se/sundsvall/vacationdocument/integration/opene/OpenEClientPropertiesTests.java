@@ -18,12 +18,16 @@ class OpenEClientPropertiesTests {
 
     @Test
     void verifyProperties() {
-        assertThat(properties.baseUrl()).isEqualTo("someBaseUrl");
-        assertThat(properties.username()).isEqualTo("someUsername");
-        assertThat(properties.password()).isEqualTo("somePassword");
-        assertThat(properties.familyId()).isEqualTo("someFamilyId");
-        assertThat(properties.approvedByManagerStatusId()).isEqualTo("someStatusId");
-        assertThat(properties.connectTimeoutInSeconds()).isEqualTo(7);
-        assertThat(properties.readTimeoutInSeconds()).isEqualTo(11);
+        assertThat(properties).isNotNull();
+        assertThat(properties.environments()).hasSize(1);
+        assertThat(properties.environments().get("1984")).satisfies(openEEnvironment -> {
+            assertThat(openEEnvironment.baseUrl()).isEqualTo("someBaseUrl");
+            assertThat(openEEnvironment.username()).isEqualTo("someUsername");
+            assertThat(openEEnvironment.password()).isEqualTo("somePassword");
+            assertThat(openEEnvironment.familyId()).isEqualTo("someFamilyId");
+            assertThat(openEEnvironment.approvedByManagerStatusId()).isEqualTo("someStatusId");
+            assertThat(openEEnvironment.connectTimeoutInSeconds()).isEqualTo(7);
+            assertThat(openEEnvironment.readTimeoutInSeconds()).isEqualTo(11);
+        });
     }
 }

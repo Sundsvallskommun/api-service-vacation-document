@@ -1,5 +1,7 @@
 package se.sundsvall.vacationdocument.integration.opene;
 
+import java.util.Map;
+
 import jakarta.validation.constraints.NotBlank;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,25 +10,28 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "integration.open-e")
-record OpenEClientProperties(
+record OpenEClientProperties(Map<String, OpenEEnvironment> environments) {
 
-        @NotBlank
-        String baseUrl,
+        record OpenEEnvironment(
 
-        @NotBlank
-        String familyId,
+            @NotBlank
+            String baseUrl,
 
-        @NotBlank
-        String approvedByManagerStatusId,
+            @NotBlank
+            String familyId,
 
-        @NotBlank
-        String username,
+            @NotBlank
+            String approvedByManagerStatusId,
 
-        @NotBlank
-        String password,
+            @NotBlank
+            String username,
 
-        @DefaultValue("5")
-        int connectTimeoutInSeconds,
+            @NotBlank
+            String password,
 
-        @DefaultValue("30")
-        int readTimeoutInSeconds) { }
+            @DefaultValue("5")
+            int connectTimeoutInSeconds,
+
+            @DefaultValue("30")
+            int readTimeoutInSeconds) { }
+}

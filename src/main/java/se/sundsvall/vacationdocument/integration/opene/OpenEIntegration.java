@@ -1,5 +1,7 @@
 package se.sundsvall.vacationdocument.integration.opene;
 
+import static java.util.Optional.ofNullable;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.vacationdocument.integration.opene.EmployeeInformationBuilder.newEmployeeInformation;
 import static se.sundsvall.vacationdocument.integration.opene.ManagerInformationBuilder.newManagerInformation;
 import static se.sundsvall.vacationdocument.integration.opene.OpenEDocumentBuilder.newDocument;
@@ -9,6 +11,7 @@ import static se.sundsvall.vacationdocument.integration.opene.util.XPathUtil.get
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.zalando.problem.Problem;
 
 @Component
 public class OpenEIntegration {
@@ -20,26 +23,30 @@ public class OpenEIntegration {
     private static final String EMPLOYEE_INFO_PATH = "/FlowInstance/Values/Medarbetaruppgifter";
     private static final String MANAGER_INFO_PATH = "/FlowInstance/Values/Manager";
 
+    private final OpenEClientFactory clientFactory;
     private final OpenEClientProperties properties;
-    private final OpenEClient client;
 
-    OpenEIntegration(final OpenEClientProperties properties, final OpenEClient client) {
+    OpenEIntegration(final OpenEClientFactory clientFactory, final OpenEClientProperties properties) {
+        this.clientFactory = clientFactory;
         this.properties = properties;
-        this.client = client;
     }
 
-    public List<OpenEDocument> getDocuments(final String fromDate, final String toDate) {
-        return getDocumentIds(fromDate, toDate).stream()
+    public List<OpenEDocument> getDocuments(final String municipalityId, final String fromDate, final String toDate) {
+        var client = clientFactory.getClient(municipalityId);
+
+        return getDocumentIds(municipalityId, fromDate, toDate).stream()
             // Get the errand
             .map(client::getErrand)
             // Map the XML to an OpenE document
-            .map(this::mapToDocument)
+            .map(documentXml -> mapToDocument(municipalityId, documentXml))
             .toList();
     }
 
-    List<String> getDocumentIds(final String fromDate, final String toDate) {
+    List<String> getDocumentIds(final String municipalityId, final String fromDate, final String toDate) {
+        var client = clientFactory.getClient(municipalityId);
+
         // Get the document list from OpenE
-        var documentsXml = client.getErrands(properties.familyId(), fromDate, toDate);
+        var documentsXml = client.getErrands(getFamilyId(municipalityId), fromDate, toDate);
         // Extract the document id:s
         var result = evaluateXPath(documentsXml, DOCUMENTS_ID_PATH);
         // Trim the errand id:s, just to be safe(r)
@@ -48,13 +55,13 @@ public class OpenEIntegration {
             .toList();
     }
 
-    OpenEDocument mapToDocument(final byte[] documentXml) {
+    OpenEDocument mapToDocument(final String municipalityId, final byte[] documentXml) {
         var statusId = getString(documentXml, STATUS_ID_PATH);
 
         return newDocument()
             .withId(getString(documentXml, DOCUMENT_ID_PATH))
             .withName(getString(documentXml, DESCRIPTION_PATH))
-            .withApprovedByManager(properties.approvedByManagerStatusId().equals(statusId))
+            .withApprovedByManager(getApprovedManagerStatusId(municipalityId).equals(statusId))
             .withEmployeeInformation(newEmployeeInformation()
                 .withFirstName(getString(documentXml, EMPLOYEE_INFO_PATH.concat("/firstname")))
                 .withLastName(getString(documentXml, EMPLOYEE_INFO_PATH.concat("/lastname")))
@@ -73,5 +80,17 @@ public class OpenEIntegration {
                 .withOrganization(getString(documentXml, MANAGER_INFO_PATH.concat("/organization")))
                 .build())
             .build();
+    }
+
+    String getFamilyId(final String municipalityId) {
+        return ofNullable(properties.environments().get(municipalityId))
+            .map(OpenEClientProperties.OpenEEnvironment::familyId)
+            .orElseThrow(() -> Problem.valueOf(INTERNAL_SERVER_ERROR, String.format("No OpenE configuration exists for municipalityId %s", municipalityId)));
+    }
+
+    String getApprovedManagerStatusId(final String municipalityId) {
+        return ofNullable(properties.environments().get(municipalityId))
+            .map(OpenEClientProperties.OpenEEnvironment::approvedByManagerStatusId)
+            .orElseThrow(() -> Problem.valueOf(INTERNAL_SERVER_ERROR, String.format("No OpenE configuration exists for municipalityId %s", municipalityId)));
     }
 }

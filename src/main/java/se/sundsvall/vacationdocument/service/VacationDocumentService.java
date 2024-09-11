@@ -49,7 +49,7 @@ class VacationDocumentService {
 
     void processDocuments(final String municipalityId, final LocalDate fromDate, final LocalDate toDate) {
         // Get OpenE documents in the given date range
-        var openEDocuments = openEIntegration.getDocuments(fromDate.format(ISO_LOCAL_DATE), toDate.format(ISO_LOCAL_DATE));
+        var openEDocuments = openEIntegration.getDocuments(municipalityId, fromDate.format(ISO_LOCAL_DATE), toDate.format(ISO_LOCAL_DATE));
 
         for (var openEDocument : openEDocuments) {
             var documentId = openEDocument.id();

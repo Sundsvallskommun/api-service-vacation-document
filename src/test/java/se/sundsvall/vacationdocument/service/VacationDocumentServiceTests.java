@@ -89,7 +89,7 @@ class VacationDocumentServiceTests {
         var doc1 = createOpenEDocument("someId", "someName", true);
         var doc2 = createOpenEDocument("someOtherId", "someOtherName", false);
 
-        when(openEIntegrationMock.getDocuments(from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
+        when(openEIntegrationMock.getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
             .thenReturn(List.of(doc1, doc2));
         when(templatingClientMock.renderPdf(eq(municipalityId), any(RenderRequest.class)))
             .thenReturn(new RenderResponse().output(OUTPUT));
@@ -101,7 +101,7 @@ class VacationDocumentServiceTests {
 
         service.processDocuments(municipalityId, from, to);
 
-        verify(openEIntegrationMock).getDocuments(from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
+        verify(openEIntegrationMock).getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
         verify(dbIntegrationMock, times(2)).existsById(eq(municipalityId), anyString());
         verify(dbIntegrationMock, times(2)).saveDocument(anyString(), eq(municipalityId), any(DocumentStatus.class));
         verify(dbIntegrationMock, never()).updateDocument(eq(doc2.id()), eq(municipalityId), any(DocumentStatus.class));
@@ -156,13 +156,13 @@ class VacationDocumentServiceTests {
         var to = LocalDate.of(2024, 1, 31);
         var doc = createOpenEDocument("someId", "someName", true);
 
-        when(openEIntegrationMock.getDocuments(from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
+        when(openEIntegrationMock.getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
             .thenReturn(List.of(doc));
         when(dbIntegrationMock.existsById(municipalityId, doc.id())).thenReturn(true);
 
         service.processDocuments(municipalityId, from, to);
 
-        verify(openEIntegrationMock).getDocuments(from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
+        verify(openEIntegrationMock).getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
         verify(dbIntegrationMock).existsById(eq(municipalityId), anyString());
         verifyNoMoreInteractions(openEIntegrationMock, dbIntegrationMock, templatingClientMock, partyClientMock, documentClientMock);
     }
