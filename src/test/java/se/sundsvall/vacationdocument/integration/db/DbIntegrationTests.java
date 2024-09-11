@@ -58,8 +58,9 @@ class DbIntegrationTests {
         verify(mockJdbcTemplate).queryForObject(eq(SQL_EXISTS_BY_ID), parameterMapCaptor.capture(), eq(Long.class));
 
         var parameterMap = parameterMapCaptor.getValue();
-        assertThat(parameterMap).containsEntry(DOCUMENT_ID, documentId);
-        assertThat(parameterMap).containsEntry(MUNICIPALITY_ID, municipalityId);
+        assertThat(parameterMap)
+            .containsEntry(DOCUMENT_ID, documentId)
+            .containsEntry(MUNICIPALITY_ID, municipalityId);
     }
 
     @Test
