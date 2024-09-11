@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static se.sundsvall.vacationdocument.integration.templating.TemplatingClientConfiguration.CLIENT_ID;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,8 +20,8 @@ import generated.se.sundsvall.templating.RenderResponse;
 public interface TemplatingClient {
 
     @PostMapping(
-        path = "/render/pdf",
+        path = "/{municipalityId}/render/pdf",
         produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE }
     )
-    RenderResponse renderPdf(@RequestBody RenderRequest request);
+    RenderResponse renderPdf(@PathVariable("municipalityId") String municipalityId, @RequestBody RenderRequest request);
 }
