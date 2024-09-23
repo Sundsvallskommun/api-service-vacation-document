@@ -25,9 +25,9 @@ import se.sundsvall.dept44.test.extension.ResourceLoaderExtension;
 class OpenEIntegrationTests {
 
     private byte[] documentsXml;
-    private byte[] documentXml_206830;
-    private byte[] documentXml_206832;
-    private byte[] documentXml_206833;
+    private byte[] documentXml206830;
+    private byte[] documentXml206832;
+    private byte[] documentXml206833;
 
     @Mock
     private OpenEClientProperties mockProperties;
@@ -48,9 +48,9 @@ class OpenEIntegrationTests {
             @Load("/open-e/open-e-document-206832.xml") final String documentXml_206832,
             @Load("/open-e/open-e-document-206833.xml") final String documentXml_206833) {
         this.documentsXml = documentsXml.getBytes(UTF_8);
-        this.documentXml_206830 = documentXml_206830.getBytes(UTF_8);
-        this.documentXml_206832 = documentXml_206832.getBytes(UTF_8);
-        this.documentXml_206833 = documentXml_206833.getBytes(UTF_8);
+        this.documentXml206830 = documentXml_206830.getBytes(UTF_8);
+        this.documentXml206832 = documentXml_206832.getBytes(UTF_8);
+        this.documentXml206833 = documentXml_206833.getBytes(UTF_8);
     }
 
     @Test
@@ -66,9 +66,9 @@ class OpenEIntegrationTests {
 
         when(mockClientFactory.getClient(municipalityId)).thenReturn(mockClient);
         when(mockClient.getErrands(familyId, fromDate, toDate)).thenReturn(documentsXml);
-        when(mockClient.getErrand("206830")).thenReturn(documentXml_206830);
-        when(mockClient.getErrand("206832")).thenReturn(documentXml_206832);
-        when(mockClient.getErrand("206833")).thenReturn(documentXml_206833);
+        when(mockClient.getErrand("206830")).thenReturn(documentXml206830);
+        when(mockClient.getErrand("206832")).thenReturn(documentXml206832);
+        when(mockClient.getErrand("206833")).thenReturn(documentXml206833);
 
         var documents = openEIntegration.getDocuments(municipalityId, fromDate, toDate);
 
