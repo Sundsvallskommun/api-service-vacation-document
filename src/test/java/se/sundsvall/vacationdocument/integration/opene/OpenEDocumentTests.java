@@ -18,6 +18,7 @@ class OpenEDocumentTests {
         var phoneNumber = "somePhoneNumber";
         var mobileNumber = "someMobileNumber";
         var ssn = "someSsn";
+        var formattedSsn = "som-eSsn";
         var jobTitle = "someJobTitle";
         var organization = "someOrganization";
         var username = "someUsername";
@@ -50,7 +51,7 @@ class OpenEDocumentTests {
             assertThat(employeeInformation.emailAddress()).isEqualTo(emailAddress);
             assertThat(employeeInformation.phoneNumber()).isEqualTo(phoneNumber);
             assertThat(employeeInformation.mobileNumber()).isEqualTo(mobileNumber);
-            assertThat(employeeInformation.ssn()).isEqualTo(ssn);
+            assertThat(employeeInformation.ssn()).isEqualTo(formattedSsn);
             assertThat(employeeInformation.jobTitle()).isEqualTo(jobTitle);
             assertThat(employeeInformation.organization()).isEqualTo(organization);
         });

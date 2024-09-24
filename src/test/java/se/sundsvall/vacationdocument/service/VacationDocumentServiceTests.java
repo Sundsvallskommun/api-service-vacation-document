@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
-import static se.sundsvall.vacationdocument.TestDataFactory.EMPLOYEE_SSN;
+import static se.sundsvall.vacationdocument.TestDataFactory.FORMATTED_EMPLOYEE_SSN;
 import static se.sundsvall.vacationdocument.TestDataFactory.OUTPUT;
 import static se.sundsvall.vacationdocument.TestDataFactory.createOpenEDocument;
 import static se.sundsvall.vacationdocument.model.DocumentStatus.DONE;
@@ -93,7 +93,7 @@ class VacationDocumentServiceTests {
             .thenReturn(List.of(doc1, doc2));
         when(templatingClientMock.renderPdf(eq(municipalityId), any(RenderRequest.class)))
             .thenReturn(new RenderResponse().output(OUTPUT));
-        when(partyClientMock.getPartyId(municipalityId, PRIVATE, EMPLOYEE_SSN))
+        when(partyClientMock.getPartyId(municipalityId, PRIVATE, FORMATTED_EMPLOYEE_SSN))
             .thenReturn(Optional.of(partyId))
             .thenReturn(Optional.empty());
         when(documentClientMock.createDocument(eq(municipalityId), any(DocumentCreateRequest.class), anyList()))
@@ -107,7 +107,7 @@ class VacationDocumentServiceTests {
         verify(dbIntegrationMock, never()).updateDocument(eq(doc2.id()), eq(municipalityId), any(DocumentStatus.class));
         verify(dbIntegrationMock).updateDocument(doc1.id(), municipalityId, DONE);
         verify(templatingClientMock).renderPdf(eq(municipalityId), any(RenderRequest.class));
-        verify(partyClientMock).getPartyId(municipalityId, PRIVATE, EMPLOYEE_SSN);
+        verify(partyClientMock).getPartyId(municipalityId, PRIVATE, FORMATTED_EMPLOYEE_SSN);
         verify(documentClientMock).createDocument(eq(municipalityId), documentRequestCaptor.capture(), documentFilesCaptor.capture());
         verifyNoMoreInteractions(openEIntegrationMock, dbIntegrationMock, templatingClientMock, partyClientMock, documentClientMock);
 

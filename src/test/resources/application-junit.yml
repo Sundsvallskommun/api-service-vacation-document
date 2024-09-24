@@ -35,8 +35,13 @@ integration:
         password: somePassword
         family-id: someFamilyId
         approved-by-manager-status-id: someStatusId
+        template-id: someTemplateId
         connect-timeout-in-seconds: 7
         read-timeout-in-seconds: 11
+        scheduling:
+          enabled: false
+          cron-expression: '-'
+          lock-at-most-for: PT2M
 
   # Document
   document:

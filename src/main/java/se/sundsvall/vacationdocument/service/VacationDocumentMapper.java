@@ -8,12 +8,16 @@ import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.JO
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.LAST_NAME;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.MANAGER_INFORMATION;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.MOBILE_NUMBER;
+import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.NAME;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.ORGANIZATION;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.PARTY_ID;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.PHONE_NUMBER;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.SSN;
+import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.TIMESTAMP;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.USERNAME;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +36,12 @@ final class VacationDocumentMapper {
         var employeeInformation = new HashMap<String, String>();
 
         ofNullable(document.employeeInformation()).ifPresent(employee -> {
-            ofNullable(employee.firstName()).ifPresent(value -> employeeInformation.put(FIRST_NAME, value));
-            ofNullable(employee.lastName()).ifPresent(value -> employeeInformation.put(LAST_NAME, value));
+            employeeInformation.put(NAME, employee.name());
+            employeeInformation.put(SSN, employee.ssn());
+
             ofNullable(employee.emailAddress()).ifPresent(value -> employeeInformation.put(EMAIL_ADDRESS, value));
             ofNullable(employee.phoneNumber()).ifPresent(value -> employeeInformation.put(PHONE_NUMBER, value));
             ofNullable(employee.mobileNumber()).ifPresent(value -> employeeInformation.put(MOBILE_NUMBER, value));
-            ofNullable(employee.ssn()).ifPresent(value -> employeeInformation.put(SSN, value));
             ofNullable(employee.jobTitle()).ifPresent(value -> employeeInformation.put(JOB_TITLE, value));
             ofNullable(employee.organization()).ifPresent(value -> employeeInformation.put(ORGANIZATION, value));
         });
@@ -45,14 +49,15 @@ final class VacationDocumentMapper {
         var managerInformation = new HashMap<String, String>();
 
         ofNullable(document.managerInformation()).ifPresent(manager -> {
-            ofNullable(manager.firstName()).ifPresent(value -> managerInformation.put(FIRST_NAME, value));
-            ofNullable(manager.lastName()).ifPresent(value -> managerInformation.put(LAST_NAME, value));
+            managerInformation.put(NAME, manager.name());
+
             ofNullable(manager.username()).ifPresent(value -> managerInformation.put(USERNAME, value));
             ofNullable(manager.jobTitle()).ifPresent(value -> managerInformation.put(JOB_TITLE, value));
             ofNullable(manager.organization()).ifPresent(value -> managerInformation.put(ORGANIZATION, value));
         });
 
         return Map.of(
+            TIMESTAMP, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")),
             EMPLOYEE_INFORMATION, employeeInformation,
             MANAGER_INFORMATION, managerInformation);
     }

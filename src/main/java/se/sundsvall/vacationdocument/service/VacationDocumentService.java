@@ -38,8 +38,10 @@ class VacationDocumentService {
     private final PartyClient partyClient;
 
     VacationDocumentService(final OpenEIntegration openEIntegration,
-            final DbIntegration dbIntegration, final TemplatingClient templatingClient,
-            final DocumentClient documentClient, final PartyClient partyClient) {
+            final DbIntegration dbIntegration,
+            final TemplatingClient templatingClient,
+            final DocumentClient documentClient,
+            final PartyClient partyClient) {
         this.openEIntegration = openEIntegration;
         this.dbIntegration = dbIntegration;
         this.templatingClient = templatingClient;
@@ -73,7 +75,7 @@ class VacationDocumentService {
 
             try {
                 var renderRequest = new RenderRequest()
-                    .identifier("someIdentifier")
+                    .identifier("someTemplateId")
                     .parameters(mapToRenderRequestParameters(openEDocument));
                 // Render the OpenE document as a PDF
                 var renderResponse = templatingClient.renderPdf(municipalityId, renderRequest);
