@@ -9,14 +9,17 @@ public final class TestDataFactory {
 
     public static final String EMPLOYEE_FIRST_NAME = "someEmployeeFirstName";
     public static final String EMPLOYEE_LAST_NAME = "someEmployeeLastName";
+    public static final String EMPLOYEE_NAME = EMPLOYEE_FIRST_NAME + " " + EMPLOYEE_LAST_NAME;
     public static final String EMPLOYEE_EMAIL_ADDRESS = "someEmployeeEmailAddress";
     public static final String EMPLOYEE_PHONE_NUMBER = "someEmployeePhoneNumber";
     public static final String EMPLOYEE_MOBILE_NUMBER = "someEmployeeMobileNumber";
     public static final String EMPLOYEE_SSN = "someEmployeeSsn";
+    public static final String FORMATTED_EMPLOYEE_SSN = "someEmploye-eSsn";
     public static final String EMPLOYEE_JOB_TITLE = "someEmployeeJobTitle";
     public static final String EMPLOYEE_ORGANIZATION = "someEmployeeOrganization";
     public static final String MANAGER_FIRST_NAME = "someManagerFirstName";
     public static final String MANAGER_LAST_NAME = "someManagerLastName";
+    public static final String MANAGER_NAME = MANAGER_FIRST_NAME + " " + MANAGER_LAST_NAME;
     public static final String MANAGER_USERNAME = "someManagerLastName";
     public static final String MANAGER_JOB_TITLE = "someManagerJobTitle";
     public static final String MANAGER_ORGANIZATION = "someManagerOrganization";

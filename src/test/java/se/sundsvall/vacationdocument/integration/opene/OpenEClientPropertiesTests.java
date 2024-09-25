@@ -26,6 +26,7 @@ class OpenEClientPropertiesTests {
             assertThat(openEEnvironment.password()).isEqualTo("somePassword");
             assertThat(openEEnvironment.familyId()).isEqualTo("someFamilyId");
             assertThat(openEEnvironment.approvedByManagerStatusId()).isEqualTo("someStatusId");
+            assertThat(openEEnvironment.templateId()).isEqualTo("someTemplateId");
             assertThat(openEEnvironment.connectTimeoutInSeconds()).isEqualTo(7);
             assertThat(openEEnvironment.readTimeoutInSeconds()).isEqualTo(11);
         });

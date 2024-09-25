@@ -1,8 +1,11 @@
 package se.sundsvall.vacationdocument.integration.opene;
 
+import java.time.Duration;
 import java.util.Map;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -10,9 +13,13 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "integration.open-e")
-record OpenEClientProperties(Map<String, OpenEEnvironment> environments) {
+public record OpenEClientProperties(Map<String, OpenEEnvironment> environments) {
 
-        record OpenEEnvironment(
+    public record OpenEEnvironment(
+
+            @Valid
+            @NotNull
+            Scheduling scheduling,
 
             @NotBlank
             String baseUrl,
@@ -29,9 +36,24 @@ record OpenEClientProperties(Map<String, OpenEEnvironment> environments) {
             @NotBlank
             String password,
 
+            @NotBlank
+            String templateId,
+
             @DefaultValue("5")
             int connectTimeoutInSeconds,
 
             @DefaultValue("30")
-            int readTimeoutInSeconds) { }
+            int readTimeoutInSeconds) {
+
+        public record Scheduling(
+
+            @DefaultValue("true")
+            boolean enabled,
+
+            @NotBlank
+            String cronExpression,
+            
+            @DefaultValue("PT2M")
+            Duration lockAtMostFor) { }
+    }
 }
