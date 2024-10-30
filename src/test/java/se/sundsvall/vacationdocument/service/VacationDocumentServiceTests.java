@@ -58,112 +58,113 @@ import generated.se.sundsvall.document.DocumentMetadata;
 import generated.se.sundsvall.templating.RenderRequest;
 import generated.se.sundsvall.templating.RenderResponse;
 
-@ExtendWith({ ResourceLoaderExtension.class, MockitoExtension.class })
+@ExtendWith({
+	ResourceLoaderExtension.class, MockitoExtension.class
+})
 class VacationDocumentServiceTests {
 
-    @Mock
-    private OpenEIntegration openEIntegrationMock;
-    @Mock
-    private DbIntegration dbIntegrationMock;
-    @Mock
-    private TemplatingClient templatingClientMock;
-    @Mock
-    private DocumentClient documentClientMock;
-    @Mock
-    private PartyClient partyClientMock;
+	@Mock
+	private OpenEIntegration openEIntegrationMock;
+	@Mock
+	private DbIntegration dbIntegrationMock;
+	@Mock
+	private TemplatingClient templatingClientMock;
+	@Mock
+	private DocumentClient documentClientMock;
+	@Mock
+	private PartyClient partyClientMock;
 
-    @Captor
-    private ArgumentCaptor<DocumentCreateRequest> documentRequestCaptor;
-    @Captor
-    private ArgumentCaptor<List<DocumentMultipartFile>> documentFilesCaptor;
+	@Captor
+	private ArgumentCaptor<DocumentCreateRequest> documentRequestCaptor;
+	@Captor
+	private ArgumentCaptor<List<DocumentMultipartFile>> documentFilesCaptor;
 
-    @InjectMocks
-    private VacationDocumentService service;
+	@InjectMocks
+	private VacationDocumentService service;
 
-    @Test
-    void testProcessDocuments() {
-        var municipalityId = "1984";
-        var partyId = "somePartyId";
-        var from = LocalDate.of(2024, 1, 1);
-        var to = LocalDate.of(2024, 1, 31);
-        var doc1 = createOpenEDocument("someId", "someName", true);
-        var doc2 = createOpenEDocument("someOtherId", "someOtherName", false);
+	@Test
+	void testProcessDocuments() {
+		var municipalityId = "1984";
+		var partyId = "somePartyId";
+		var from = LocalDate.of(2024, 1, 1);
+		var to = LocalDate.of(2024, 1, 31);
+		var doc1 = createOpenEDocument("someId", "someName", true);
+		var doc2 = createOpenEDocument("someOtherId", "someOtherName", false);
 
-        when(openEIntegrationMock.getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
-            .thenReturn(List.of(doc1, doc2));
-        when(templatingClientMock.renderPdf(eq(municipalityId), any(RenderRequest.class)))
-            .thenReturn(new RenderResponse().output(OUTPUT));
-        when(partyClientMock.getPartyId(municipalityId, PRIVATE, FORMATTED_EMPLOYEE_SSN))
-            .thenReturn(Optional.of(partyId))
-            .thenReturn(Optional.empty());
-        when(documentClientMock.createDocument(eq(municipalityId), any(DocumentCreateRequest.class), anyList()))
-            .thenReturn(new ResponseEntity<>(CREATED));
+		when(openEIntegrationMock.getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
+			.thenReturn(List.of(doc1, doc2));
+		when(templatingClientMock.renderPdf(eq(municipalityId), any(RenderRequest.class)))
+			.thenReturn(new RenderResponse().output(OUTPUT));
+		when(partyClientMock.getPartyId(municipalityId, PRIVATE, FORMATTED_EMPLOYEE_SSN))
+			.thenReturn(Optional.of(partyId))
+			.thenReturn(Optional.empty());
+		when(documentClientMock.createDocument(eq(municipalityId), any(DocumentCreateRequest.class), anyList()))
+			.thenReturn(new ResponseEntity<>(CREATED));
 
-        service.processDocuments(municipalityId, from, to);
+		service.processDocuments(municipalityId, from, to);
 
-        verify(openEIntegrationMock).getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
-        verify(dbIntegrationMock, times(2)).existsById(eq(municipalityId), anyString());
-        verify(dbIntegrationMock, times(2)).saveDocument(anyString(), eq(municipalityId), any(DocumentStatus.class));
-        verify(dbIntegrationMock, never()).updateDocument(eq(doc2.id()), eq(municipalityId), any(DocumentStatus.class));
-        verify(dbIntegrationMock).updateDocument(doc1.id(), municipalityId, DONE);
-        verify(templatingClientMock).renderPdf(eq(municipalityId), any(RenderRequest.class));
-        verify(partyClientMock).getPartyId(municipalityId, PRIVATE, FORMATTED_EMPLOYEE_SSN);
-        verify(documentClientMock).createDocument(eq(municipalityId), documentRequestCaptor.capture(), documentFilesCaptor.capture());
-        verifyNoMoreInteractions(openEIntegrationMock, dbIntegrationMock, templatingClientMock, partyClientMock, documentClientMock);
+		verify(openEIntegrationMock).getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
+		verify(dbIntegrationMock, times(2)).existsById(eq(municipalityId), anyString());
+		verify(dbIntegrationMock, times(2)).saveDocument(anyString(), eq(municipalityId), any(DocumentStatus.class));
+		verify(dbIntegrationMock, never()).updateDocument(eq(doc2.id()), eq(municipalityId), any(DocumentStatus.class));
+		verify(dbIntegrationMock).updateDocument(doc1.id(), municipalityId, DONE);
+		verify(templatingClientMock).renderPdf(eq(municipalityId), any(RenderRequest.class));
+		verify(partyClientMock).getPartyId(municipalityId, PRIVATE, FORMATTED_EMPLOYEE_SSN);
+		verify(documentClientMock).createDocument(eq(municipalityId), documentRequestCaptor.capture(), documentFilesCaptor.capture());
+		verifyNoMoreInteractions(openEIntegrationMock, dbIntegrationMock, templatingClientMock, partyClientMock, documentClientMock);
 
-        assertThat(documentRequestCaptor.getValue()).satisfies(request -> {
-            assertThat(request.getDescription()).isEqualTo(doc1.name());
-            assertThat(request.getConfidentiality()).matches(not(Confidentiality::getConfidential));
-            assertThat(request.getArchive()).isFalse();
-            assertThat(request.getCreatedBy()).isEqualTo(doc1.employeeInformation().firstName() + " " + doc1.employeeInformation().lastName());
-            assertThat(request.getMetadataList()).extracting(DocumentMetadata::getKey).containsExactlyInAnyOrder(
-                employeeKey(PARTY_ID),
-                employeeKey(FIRST_NAME),
-                employeeKey(LAST_NAME),
-                employeeKey(EMAIL_ADDRESS),
-                employeeKey(PHONE_NUMBER),
-                employeeKey(MOBILE_NUMBER),
-                employeeKey(JOB_TITLE),
-                employeeKey(ORGANIZATION),
-                managerKey(FIRST_NAME),
-                managerKey(LAST_NAME),
-                managerKey(USERNAME),
-                managerKey(JOB_TITLE),
-                managerKey(ORGANIZATION));
-            assertThat(request.getMetadataList()).extracting(DocumentMetadata::getValue).containsExactlyInAnyOrder(
-                partyId,
-                doc1.employeeInformation().firstName(),
-                doc1.employeeInformation().lastName(),
-                doc1.employeeInformation().emailAddress(),
-                doc1.employeeInformation().phoneNumber(),
-                doc1.employeeInformation().mobileNumber(),
-                doc1.employeeInformation().jobTitle(),
-                doc1.employeeInformation().organization(),
-                doc1.managerInformation().firstName(),
-                doc1.managerInformation().lastName(),
-                doc1.managerInformation().username(),
-                doc1.managerInformation().jobTitle(),
-                doc1.managerInformation().organization());
-        });
-        assertThat(documentFilesCaptor.getValue()).hasSize(1).first().satisfies(documentFile ->
-            assertThat(documentFile.getOriginalFilename()).isEqualTo("Semesterväxlingsdokument_%s.pdf".formatted(partyId)));
-    }
+		assertThat(documentRequestCaptor.getValue()).satisfies(request -> {
+			assertThat(request.getDescription()).isEqualTo(doc1.name());
+			assertThat(request.getConfidentiality()).matches(not(Confidentiality::getConfidential));
+			assertThat(request.getArchive()).isFalse();
+			assertThat(request.getCreatedBy()).isEqualTo(doc1.employeeInformation().firstName() + " " + doc1.employeeInformation().lastName());
+			assertThat(request.getMetadataList()).extracting(DocumentMetadata::getKey).containsExactlyInAnyOrder(
+				employeeKey(PARTY_ID),
+				employeeKey(FIRST_NAME),
+				employeeKey(LAST_NAME),
+				employeeKey(EMAIL_ADDRESS),
+				employeeKey(PHONE_NUMBER),
+				employeeKey(MOBILE_NUMBER),
+				employeeKey(JOB_TITLE),
+				employeeKey(ORGANIZATION),
+				managerKey(FIRST_NAME),
+				managerKey(LAST_NAME),
+				managerKey(USERNAME),
+				managerKey(JOB_TITLE),
+				managerKey(ORGANIZATION));
+			assertThat(request.getMetadataList()).extracting(DocumentMetadata::getValue).containsExactlyInAnyOrder(
+				partyId,
+				doc1.employeeInformation().firstName(),
+				doc1.employeeInformation().lastName(),
+				doc1.employeeInformation().emailAddress(),
+				doc1.employeeInformation().phoneNumber(),
+				doc1.employeeInformation().mobileNumber(),
+				doc1.employeeInformation().jobTitle(),
+				doc1.employeeInformation().organization(),
+				doc1.managerInformation().firstName(),
+				doc1.managerInformation().lastName(),
+				doc1.managerInformation().username(),
+				doc1.managerInformation().jobTitle(),
+				doc1.managerInformation().organization());
+		});
+		assertThat(documentFilesCaptor.getValue()).hasSize(1).first().satisfies(documentFile -> assertThat(documentFile.getOriginalFilename()).isEqualTo("Semesterväxlingsdokument_%s.pdf".formatted(partyId)));
+	}
 
-    @Test
-    void testProcessDocumentsWhenLocalDocumentAlreadyExists() {
-        var municipalityId = "1984";
-        var from = LocalDate.of(2024, 1, 1);
-        var to = LocalDate.of(2024, 1, 31);
-        var doc = createOpenEDocument("someId", "someName", true);
+	@Test
+	void testProcessDocumentsWhenLocalDocumentAlreadyExists() {
+		var municipalityId = "1984";
+		var from = LocalDate.of(2024, 1, 1);
+		var to = LocalDate.of(2024, 1, 31);
+		var doc = createOpenEDocument("someId", "someName", true);
 
-        when(openEIntegrationMock.getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
-            .thenReturn(List.of(doc));
-        when(dbIntegrationMock.existsById(municipalityId, doc.id())).thenReturn(true);
+		when(openEIntegrationMock.getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE)))
+			.thenReturn(List.of(doc));
+		when(dbIntegrationMock.existsById(municipalityId, doc.id())).thenReturn(true);
 
-        service.processDocuments(municipalityId, from, to);
+		service.processDocuments(municipalityId, from, to);
 
-        verify(openEIntegrationMock).getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
-        verify(dbIntegrationMock).existsById(eq(municipalityId), anyString());
-        verifyNoMoreInteractions(openEIntegrationMock, dbIntegrationMock, templatingClientMock, partyClientMock, documentClientMock);
-    }
+		verify(openEIntegrationMock).getDocuments(municipalityId, from.format(ISO_LOCAL_DATE), to.format(ISO_LOCAL_DATE));
+		verify(dbIntegrationMock).existsById(eq(municipalityId), anyString());
+		verifyNoMoreInteractions(openEIntegrationMock, dbIntegrationMock, templatingClientMock, partyClientMock, documentClientMock);
+	}
 }

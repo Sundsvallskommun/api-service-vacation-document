@@ -13,15 +13,15 @@ import generated.se.sundsvall.templating.RenderRequest;
 import generated.se.sundsvall.templating.RenderResponse;
 
 @FeignClient(
-    name = CLIENT_ID,
-    configuration = TemplatingClientConfiguration.class,
-    url = "${integration.templating.base-url}"
-)
+	name = CLIENT_ID,
+	configuration = TemplatingClientConfiguration.class,
+	url = "${integration.templating.base-url}")
 public interface TemplatingClient {
 
-    @PostMapping(
-        path = "/{municipalityId}/render/pdf",
-        produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE }
-    )
-    RenderResponse renderPdf(@PathVariable("municipalityId") String municipalityId, @RequestBody RenderRequest request);
+	@PostMapping(
+		path = "/{municipalityId}/render/pdf",
+		produces = {
+			APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+		})
+	RenderResponse renderPdf(@PathVariable("municipalityId") String municipalityId, @RequestBody RenderRequest request);
 }

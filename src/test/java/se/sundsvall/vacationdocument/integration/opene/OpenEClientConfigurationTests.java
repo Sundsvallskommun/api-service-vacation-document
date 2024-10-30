@@ -12,23 +12,25 @@ import se.sundsvall.dept44.configuration.TruststoreConfiguration;
 import feign.Client;
 import feign.Logger;
 
-@SpringBootTest(classes = {TruststoreConfiguration.class, OpenEClientConfiguration.class})
+@SpringBootTest(classes = {
+	TruststoreConfiguration.class, OpenEClientConfiguration.class
+})
 @ActiveProfiles("junit")
 class OpenEClientConfigurationTests {
 
-    @Autowired
-    private OpenEClientProperties openEClientProperties;
+	@Autowired
+	private OpenEClientProperties openEClientProperties;
 
-    @Autowired
-    private Logger.Level feignLoggerLevel;
+	@Autowired
+	private Logger.Level feignLoggerLevel;
 
-    @Autowired
-    private Client feignOkHttpClient;
+	@Autowired
+	private Client feignOkHttpClient;
 
-    @Test
-    void testAutowiring() {
-        assertThat(openEClientProperties).isNotNull();
-        assertThat(feignLoggerLevel).isNotNull();
-        assertThat(feignOkHttpClient).isNotNull();
-    }
+	@Test
+	void testAutowiring() {
+		assertThat(openEClientProperties).isNotNull();
+		assertThat(feignLoggerLevel).isNotNull();
+		assertThat(feignOkHttpClient).isNotNull();
+	}
 }

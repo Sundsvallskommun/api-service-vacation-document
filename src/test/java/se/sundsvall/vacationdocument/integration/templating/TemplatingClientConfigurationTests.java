@@ -28,49 +28,49 @@ import se.sundsvall.vacationdocument.Application;
 @ActiveProfiles("junit")
 class TemplatingClientConfigurationTests {
 
-    @Mock
-    private ClientRegistration mockClientRegistration;
+	@Mock
+	private ClientRegistration mockClientRegistration;
 
-    @Mock
-    private ClientRegistration.Builder mockClientRegistrationBuilder;
+	@Mock
+	private ClientRegistration.Builder mockClientRegistrationBuilder;
 
-    @Mock
-    private FeignBuilderCustomizer mockFeignBuilderCustomizer;
+	@Mock
+	private FeignBuilderCustomizer mockFeignBuilderCustomizer;
 
-    @Spy
-    private FeignMultiCustomizer feignMultiCustomizerSpy;
+	@Spy
+	private FeignMultiCustomizer feignMultiCustomizerSpy;
 
-    @Captor
-    private ArgumentCaptor<ProblemErrorDecoder> errorDecoderCaptor;
+	@Captor
+	private ArgumentCaptor<ProblemErrorDecoder> errorDecoderCaptor;
 
-    @Autowired
-    private TemplatingClientProperties mockProperties;
+	@Autowired
+	private TemplatingClientProperties mockProperties;
 
-    @Test
-    void testFeignBuilderMultiCustomizer() {
-        var configuration = new TemplatingClientConfiguration();
+	@Test
+	void testFeignBuilderMultiCustomizer() {
+		var configuration = new TemplatingClientConfiguration();
 
-        try (var mockFeignMultiCustomizer = mockStatic(FeignMultiCustomizer.class);
-                var staticMockClientRegistration = mockStatic(ClientRegistration.class)) {
-            mockFeignMultiCustomizer.when(FeignMultiCustomizer::create).thenReturn(feignMultiCustomizerSpy);
-            staticMockClientRegistration.when(() -> ClientRegistration.withRegistrationId(CLIENT_ID)).thenReturn(mockClientRegistrationBuilder);
+		try (var mockFeignMultiCustomizer = mockStatic(FeignMultiCustomizer.class);
+			var staticMockClientRegistration = mockStatic(ClientRegistration.class)) {
+			mockFeignMultiCustomizer.when(FeignMultiCustomizer::create).thenReturn(feignMultiCustomizerSpy);
+			staticMockClientRegistration.when(() -> ClientRegistration.withRegistrationId(CLIENT_ID)).thenReturn(mockClientRegistrationBuilder);
 
-            when(feignMultiCustomizerSpy.composeCustomizersToOne()).thenReturn(mockFeignBuilderCustomizer);
-            when(mockClientRegistrationBuilder.tokenUri("someTokenUrl")).thenReturn(mockClientRegistrationBuilder);
-            when(mockClientRegistrationBuilder.clientId("someClientId")).thenReturn(mockClientRegistrationBuilder);
-            when(mockClientRegistrationBuilder.clientSecret("someClientSecret")).thenReturn(mockClientRegistrationBuilder);
-            when(mockClientRegistrationBuilder.authorizationGrantType(any(AuthorizationGrantType.class))).thenReturn(mockClientRegistrationBuilder);
-            when(mockClientRegistrationBuilder.build()).thenReturn(mockClientRegistration);
+			when(feignMultiCustomizerSpy.composeCustomizersToOne()).thenReturn(mockFeignBuilderCustomizer);
+			when(mockClientRegistrationBuilder.tokenUri("someTokenUrl")).thenReturn(mockClientRegistrationBuilder);
+			when(mockClientRegistrationBuilder.clientId("someClientId")).thenReturn(mockClientRegistrationBuilder);
+			when(mockClientRegistrationBuilder.clientSecret("someClientSecret")).thenReturn(mockClientRegistrationBuilder);
+			when(mockClientRegistrationBuilder.authorizationGrantType(any(AuthorizationGrantType.class))).thenReturn(mockClientRegistrationBuilder);
+			when(mockClientRegistrationBuilder.build()).thenReturn(mockClientRegistration);
 
-            var customizer = configuration.feignBuilderCustomizer(mockProperties);
+			var customizer = configuration.feignBuilderCustomizer(mockProperties);
 
-            verify(feignMultiCustomizerSpy).withErrorDecoder(errorDecoderCaptor.capture());
-            verify(feignMultiCustomizerSpy).withRetryableOAuth2InterceptorForClientRegistration(same(mockClientRegistration));
-            verify(feignMultiCustomizerSpy).withRequestTimeoutsInSeconds(3, 15);
-            verify(feignMultiCustomizerSpy).composeCustomizersToOne();
+			verify(feignMultiCustomizerSpy).withErrorDecoder(errorDecoderCaptor.capture());
+			verify(feignMultiCustomizerSpy).withRetryableOAuth2InterceptorForClientRegistration(same(mockClientRegistration));
+			verify(feignMultiCustomizerSpy).withRequestTimeoutsInSeconds(3, 15);
+			verify(feignMultiCustomizerSpy).composeCustomizersToOne();
 
-            assertThat(errorDecoderCaptor.getValue()).hasFieldOrPropertyWithValue("integrationName", CLIENT_ID);
-            assertThat(customizer).isSameAs(mockFeignBuilderCustomizer);
-        }
-    }
+			assertThat(errorDecoderCaptor.getValue()).hasFieldOrPropertyWithValue("integrationName", CLIENT_ID);
+			assertThat(customizer).isSameAs(mockFeignBuilderCustomizer);
+		}
+	}
 }

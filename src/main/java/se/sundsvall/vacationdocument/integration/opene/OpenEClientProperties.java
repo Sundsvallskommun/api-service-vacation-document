@@ -15,45 +15,32 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "integration.open-e")
 public record OpenEClientProperties(Map<String, OpenEEnvironment> environments) {
 
-    public record OpenEEnvironment(
+	public record OpenEEnvironment(
 
-            @Valid
-            @NotNull
-            Scheduling scheduling,
+		@Valid @NotNull Scheduling scheduling,
 
-            @NotBlank
-            String baseUrl,
+		@NotBlank String baseUrl,
 
-            @NotBlank
-            String familyId,
+		@NotBlank String familyId,
 
-            @NotBlank
-            String approvedByManagerStatusId,
+		@NotBlank String approvedByManagerStatusId,
 
-            @NotBlank
-            String username,
+		@NotBlank String username,
 
-            @NotBlank
-            String password,
+		@NotBlank String password,
 
-            @NotBlank
-            String templateId,
+		@NotBlank String templateId,
 
-            @DefaultValue("5")
-            int connectTimeoutInSeconds,
+		@DefaultValue("5") int connectTimeoutInSeconds,
 
-            @DefaultValue("30")
-            int readTimeoutInSeconds) {
+		@DefaultValue("30") int readTimeoutInSeconds) {
 
-        public record Scheduling(
+		public record Scheduling(
 
-            @DefaultValue("true")
-            boolean enabled,
+			@DefaultValue("true") boolean enabled,
 
-            @NotBlank
-            String cronExpression,
-            
-            @DefaultValue("PT2M")
-            Duration lockAtMostFor) { }
-    }
+			@NotBlank String cronExpression,
+
+			@DefaultValue("PT2M") Duration lockAtMostFor) {}
+	}
 }

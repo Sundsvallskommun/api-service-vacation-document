@@ -29,73 +29,73 @@ import net.javacrumbs.shedlock.spring.LockableTaskScheduler;
 @ExtendWith(MockitoExtension.class)
 class VacationDocumentSchedulerTests {
 
-    private static final String MUNICIPALITY_ID_1 = "1984";
-    private static final String MUNICIPALITY_ID_2 = "1985";
+	private static final String MUNICIPALITY_ID_1 = "1984";
+	private static final String MUNICIPALITY_ID_2 = "1985";
 
-    @Mock
-    private OpenEClientProperties.OpenEEnvironment openEEnvironmentMock1;
-    @Mock
-    private OpenEClientProperties.OpenEEnvironment.Scheduling openEEnvironmentSchedulingMock1;
-    @Mock
-    private OpenEClientProperties.OpenEEnvironment openEEnvironmentMock2;
-    @Mock
-    private OpenEClientProperties.OpenEEnvironment.Scheduling openEEnvironmentSchedulingMock2;
+	@Mock
+	private OpenEClientProperties.OpenEEnvironment openEEnvironmentMock1;
+	@Mock
+	private OpenEClientProperties.OpenEEnvironment.Scheduling openEEnvironmentSchedulingMock1;
+	@Mock
+	private OpenEClientProperties.OpenEEnvironment openEEnvironmentMock2;
+	@Mock
+	private OpenEClientProperties.OpenEEnvironment.Scheduling openEEnvironmentSchedulingMock2;
 
-    @Mock
-    private OpenEClientProperties openEClientPropertiesMock;
-    @Mock
-    private VacationDocumentService vacationDocumentServiceMock;
-    @Mock
-    private TaskScheduler taskSchedulerMock;
-    @Mock
-    private LockProvider lockProviderMock;
+	@Mock
+	private OpenEClientProperties openEClientPropertiesMock;
+	@Mock
+	private VacationDocumentService vacationDocumentServiceMock;
+	@Mock
+	private TaskScheduler taskSchedulerMock;
+	@Mock
+	private LockProvider lockProviderMock;
 
-    @Test
-    void schedulerSetup() {
-        when(openEEnvironmentSchedulingMock1.enabled()).thenReturn(false);
-        when(openEEnvironmentMock1.scheduling()).thenReturn(openEEnvironmentSchedulingMock1);
-        when(openEEnvironmentSchedulingMock2.enabled()).thenReturn(true);
-        when(openEEnvironmentMock2.scheduling()).thenReturn(openEEnvironmentSchedulingMock2);
-        when(openEClientPropertiesMock.environments()).thenReturn(
-            Map.of(MUNICIPALITY_ID_1, openEEnvironmentMock1, MUNICIPALITY_ID_2, openEEnvironmentMock2));
+	@Test
+	void schedulerSetup() {
+		when(openEEnvironmentSchedulingMock1.enabled()).thenReturn(false);
+		when(openEEnvironmentMock1.scheduling()).thenReturn(openEEnvironmentSchedulingMock1);
+		when(openEEnvironmentSchedulingMock2.enabled()).thenReturn(true);
+		when(openEEnvironmentMock2.scheduling()).thenReturn(openEEnvironmentSchedulingMock2);
+		when(openEClientPropertiesMock.environments()).thenReturn(
+			Map.of(MUNICIPALITY_ID_1, openEEnvironmentMock1, MUNICIPALITY_ID_2, openEEnvironmentMock2));
 
-        try (var mockDefaultLockingTaskExecutor = mockConstruction(DefaultLockingTaskExecutor.class);
-                var mockLockConfiguration = mockConstruction(LockConfiguration.class);
-                var mockDefaultLockManager = mockConstruction(DefaultLockManager.class);
-                var mockCronTrigger = mockConstruction(CronTrigger.class);
-                var mockLockableTaskScheduler = mockConstruction(LockableTaskScheduler.class)) {
-            new VacationDocumentScheduler(openEClientPropertiesMock, vacationDocumentServiceMock, taskSchedulerMock, lockProviderMock);
+		try (var mockDefaultLockingTaskExecutor = mockConstruction(DefaultLockingTaskExecutor.class);
+			var mockLockConfiguration = mockConstruction(LockConfiguration.class);
+			var mockDefaultLockManager = mockConstruction(DefaultLockManager.class);
+			var mockCronTrigger = mockConstruction(CronTrigger.class);
+			var mockLockableTaskScheduler = mockConstruction(LockableTaskScheduler.class)) {
+			new VacationDocumentScheduler(openEClientPropertiesMock, vacationDocumentServiceMock, taskSchedulerMock, lockProviderMock);
 
-            assertThat(mockDefaultLockingTaskExecutor.constructed()).hasSize(1);
-            assertThat(mockLockConfiguration.constructed()).hasSize(1);
-            assertThat(mockDefaultLockManager.constructed()).hasSize(1);
-            assertThat(mockCronTrigger.constructed()).hasSize(1);
-            assertThat(mockLockableTaskScheduler.constructed()).hasSize(1);
-        }
-    }
+			assertThat(mockDefaultLockingTaskExecutor.constructed()).hasSize(1);
+			assertThat(mockLockConfiguration.constructed()).hasSize(1);
+			assertThat(mockDefaultLockManager.constructed()).hasSize(1);
+			assertThat(mockCronTrigger.constructed()).hasSize(1);
+			assertThat(mockLockableTaskScheduler.constructed()).hasSize(1);
+		}
+	}
 
-    @Nested
-    class ProcessDocumentsTaskTests {
+	@Nested
+	class ProcessDocumentsTaskTests {
 
-        @Mock
-        private VacationDocumentService vacationDocumentServiceMock;
+		@Mock
+		private VacationDocumentService vacationDocumentServiceMock;
 
-        private VacationDocumentScheduler.ProcessDocumentsTask processDocumentsTask;
+		private VacationDocumentScheduler.ProcessDocumentsTask processDocumentsTask;
 
-        @BeforeEach
-        void setUp() {
-            processDocumentsTask = new VacationDocumentScheduler.ProcessDocumentsTask(vacationDocumentServiceMock, MUNICIPALITY_ID_1);
-        }
+		@BeforeEach
+		void setUp() {
+			processDocumentsTask = new VacationDocumentScheduler.ProcessDocumentsTask(vacationDocumentServiceMock, MUNICIPALITY_ID_1);
+		}
 
-        @Test
-        void run() {
-            var today = LocalDate.now();
-            var yesterday = today.minusDays(1);
+		@Test
+		void run() {
+			var today = LocalDate.now();
+			var yesterday = today.minusDays(1);
 
-            processDocumentsTask.run();
+			processDocumentsTask.run();
 
-            verify(vacationDocumentServiceMock).processDocuments(MUNICIPALITY_ID_1, yesterday, today);
-            verifyNoMoreInteractions(vacationDocumentServiceMock);
-        }
-    }
+			verify(vacationDocumentServiceMock).processDocuments(MUNICIPALITY_ID_1, yesterday, today);
+			verifyNoMoreInteractions(vacationDocumentServiceMock);
+		}
+	}
 }

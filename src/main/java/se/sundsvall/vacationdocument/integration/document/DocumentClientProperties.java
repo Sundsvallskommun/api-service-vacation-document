@@ -14,15 +14,10 @@ import se.sundsvall.vacationdocument.integration.Oauth2;
 @ConfigurationProperties(prefix = "integration.document")
 record DocumentClientProperties(
 
-    @NotBlank
-    String baseUrl,
+	@NotBlank String baseUrl,
 
-    @Valid
-    @NotNull
-    Oauth2 oauth2,
+	@Valid @NotNull Oauth2 oauth2,
 
-    @DefaultValue("10")
-    int connectTimeoutInSeconds,
+	@DefaultValue("10") int connectTimeoutInSeconds,
 
-    @DefaultValue("30")
-    int readTimeoutInSeconds) { }
+	@DefaultValue("30") int readTimeoutInSeconds) {}

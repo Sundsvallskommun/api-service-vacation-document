@@ -13,18 +13,18 @@ import se.sundsvall.vacationdocument.Application;
 @ActiveProfiles("junit")
 class PartyClientPropertiesTests {
 
-    @Autowired
-    private PartyClientProperties properties;
+	@Autowired
+	private PartyClientProperties properties;
 
-    @Test
-    void verifyProperties() {
-        assertThat(properties.baseUrl()).isEqualTo("someBaseUrl");
-        assertThat(properties.oauth2()).isNotNull().satisfies(oauth2 -> {
-            assertThat(oauth2.tokenUrl()).isEqualTo("someTokenUrl");
-            assertThat(oauth2.clientId()).isEqualTo("someClientId");
-            assertThat(oauth2.clientSecret()).isEqualTo("someClientSecret");
-        });
-        assertThat(properties.connectTimeoutInSeconds()).isEqualTo(6);
-        assertThat(properties.readTimeoutInSeconds()).isEqualTo(12);
-    }
+	@Test
+	void verifyProperties() {
+		assertThat(properties.baseUrl()).isEqualTo("someBaseUrl");
+		assertThat(properties.oauth2()).isNotNull().satisfies(oauth2 -> {
+			assertThat(oauth2.tokenUrl()).isEqualTo("someTokenUrl");
+			assertThat(oauth2.clientId()).isEqualTo("someClientId");
+			assertThat(oauth2.clientSecret()).isEqualTo("someClientSecret");
+		});
+		assertThat(properties.connectTimeoutInSeconds()).isEqualTo(6);
+		assertThat(properties.readTimeoutInSeconds()).isEqualTo(12);
+	}
 }
