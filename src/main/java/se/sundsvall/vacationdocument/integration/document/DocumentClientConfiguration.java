@@ -16,24 +16,24 @@ import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 @EnableConfigurationProperties(DocumentClientProperties.class)
 class DocumentClientConfiguration {
 
-    static final String CLIENT_ID = "document";
+	static final String CLIENT_ID = "document";
 
-    @Bean
-    FeignBuilderCustomizer feignBuilderCustomizer(final DocumentClientProperties properties) {
-        return FeignMultiCustomizer.create()
-            .withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID))
-            .withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration.withRegistrationId(CLIENT_ID)
-                .tokenUri(properties.oauth2().tokenUrl())
-                .clientId(properties.oauth2().clientId())
-                .clientSecret(properties.oauth2().clientSecret())
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .build())
-            .withRequestTimeoutsInSeconds(properties.connectTimeoutInSeconds(), properties.readTimeoutInSeconds())
-            .composeCustomizersToOne();
-    }
+	@Bean
+	FeignBuilderCustomizer feignBuilderCustomizer(final DocumentClientProperties properties) {
+		return FeignMultiCustomizer.create()
+			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID))
+			.withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration.withRegistrationId(CLIENT_ID)
+				.tokenUri(properties.oauth2().tokenUrl())
+				.clientId(properties.oauth2().clientId())
+				.clientSecret(properties.oauth2().clientSecret())
+				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+				.build())
+			.withRequestTimeoutsInSeconds(properties.connectTimeoutInSeconds(), properties.readTimeoutInSeconds())
+			.composeCustomizersToOne();
+	}
 
-    @Bean
-    JsonFormWriter jsonFormWriter() {
-        return new JsonFormWriter();
-    }
+	@Bean
+	JsonFormWriter jsonFormWriter() {
+		return new JsonFormWriter();
+	}
 }

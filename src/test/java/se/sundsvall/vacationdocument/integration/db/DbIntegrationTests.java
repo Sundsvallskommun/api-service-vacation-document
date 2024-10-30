@@ -33,96 +33,96 @@ import se.sundsvall.vacationdocument.model.DocumentStatus;
 @ExtendWith(MockitoExtension.class)
 class DbIntegrationTests {
 
-    @Mock
-    private NamedParameterJdbcTemplate mockJdbcTemplate;
+	@Mock
+	private NamedParameterJdbcTemplate mockJdbcTemplate;
 
-    @Captor
-    private ArgumentCaptor<Map<String, Object>> parameterMapCaptor;
-    @Captor
-    private ArgumentCaptor<MapSqlParameterSource> parameterSourceCaptor;
+	@Captor
+	private ArgumentCaptor<Map<String, Object>> parameterMapCaptor;
+	@Captor
+	private ArgumentCaptor<MapSqlParameterSource> parameterSourceCaptor;
 
-    @InjectMocks
-    private DbIntegration dbIntegration;
+	@InjectMocks
+	private DbIntegration dbIntegration;
 
-    @Test
-    void existsById() {
-        var documentId = "someDocumentId";
-        var municipalityId = "someMunicipalityId";
+	@Test
+	void existsById() {
+		var documentId = "someDocumentId";
+		var municipalityId = "someMunicipalityId";
 
-        when(mockJdbcTemplate.queryForObject(eq(SQL_EXISTS_BY_ID), anyMap(), eq(Long.class))).thenReturn(1L);
+		when(mockJdbcTemplate.queryForObject(eq(SQL_EXISTS_BY_ID), anyMap(), eq(Long.class))).thenReturn(1L);
 
-        var result = dbIntegration.existsById(documentId, municipalityId);
+		var result = dbIntegration.existsById(documentId, municipalityId);
 
-        assertThat(result).isTrue();
+		assertThat(result).isTrue();
 
-        verify(mockJdbcTemplate).queryForObject(eq(SQL_EXISTS_BY_ID), parameterMapCaptor.capture(), eq(Long.class));
+		verify(mockJdbcTemplate).queryForObject(eq(SQL_EXISTS_BY_ID), parameterMapCaptor.capture(), eq(Long.class));
 
-        var parameterMap = parameterMapCaptor.getValue();
-        assertThat(parameterMap)
-            .containsEntry(DOCUMENT_ID, documentId)
-            .containsEntry(MUNICIPALITY_ID, municipalityId);
-    }
+		var parameterMap = parameterMapCaptor.getValue();
+		assertThat(parameterMap)
+			.containsEntry(DOCUMENT_ID, documentId)
+			.containsEntry(MUNICIPALITY_ID, municipalityId);
+	}
 
-    @Test
-    void saveDocument() {
-        var documentId = "someDocumentId";
-        var municipalityId = "someMunicipalityId";
-        var status = PROCESSING;
+	@Test
+	void saveDocument() {
+		var documentId = "someDocumentId";
+		var municipalityId = "someMunicipalityId";
+		var status = PROCESSING;
 
-        dbIntegration.saveDocument(documentId, municipalityId, status);
+		dbIntegration.saveDocument(documentId, municipalityId, status);
 
-        verify(mockJdbcTemplate).update(eq(SQL_INSERT), parameterSourceCaptor.capture());
+		verify(mockJdbcTemplate).update(eq(SQL_INSERT), parameterSourceCaptor.capture());
 
-        var parameterSource = parameterSourceCaptor.getValue();
-        assertThat(parameterSource.getValue(DOCUMENT_ID)).isEqualTo(documentId);
-        assertThat(parameterSource.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
-        assertThat(parameterSource.getValue(STATUS)).isEqualTo(status);
-    }
+		var parameterSource = parameterSourceCaptor.getValue();
+		assertThat(parameterSource.getValue(DOCUMENT_ID)).isEqualTo(documentId);
+		assertThat(parameterSource.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
+		assertThat(parameterSource.getValue(STATUS)).isEqualTo(status);
+	}
 
-    @Test
-    void updateDocument() {
-        var documentId = "someDocumentId";
-        var municipalityId = "someMunicipalityId";
-        var status = PROCESSING;
+	@Test
+	void updateDocument() {
+		var documentId = "someDocumentId";
+		var municipalityId = "someMunicipalityId";
+		var status = PROCESSING;
 
-        dbIntegration.updateDocument(documentId, municipalityId, status);
+		dbIntegration.updateDocument(documentId, municipalityId, status);
 
-        verify(mockJdbcTemplate).update(eq(SQL_UPDATE), parameterSourceCaptor.capture());
+		verify(mockJdbcTemplate).update(eq(SQL_UPDATE), parameterSourceCaptor.capture());
 
-        var parameterSource = parameterSourceCaptor.getValue();
-        assertThat(parameterSource.getValue(DOCUMENT_ID)).isEqualTo(documentId);
-        assertThat(parameterSource.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
-        assertThat(parameterSource.getValue(STATUS)).isEqualTo(status);
-    }
+		var parameterSource = parameterSourceCaptor.getValue();
+		assertThat(parameterSource.getValue(DOCUMENT_ID)).isEqualTo(documentId);
+		assertThat(parameterSource.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
+		assertThat(parameterSource.getValue(STATUS)).isEqualTo(status);
+	}
 
-    @Test
-    void mapToSqlParameterSourceWithDetail() {
-        var documentId = "someDocumentId";
-        var municipalityId = "someMunicipalityId";
-        var status = DocumentStatus.FAILED;
-        var detail = "someDetail";
+	@Test
+	void mapToSqlParameterSourceWithDetail() {
+		var documentId = "someDocumentId";
+		var municipalityId = "someMunicipalityId";
+		var status = DocumentStatus.FAILED;
+		var detail = "someDetail";
 
-        var result = dbIntegration.mapToSqlParameterSource(documentId, municipalityId, status, Optional.of(detail));
+		var result = dbIntegration.mapToSqlParameterSource(documentId, municipalityId, status, Optional.of(detail));
 
-        assertThat(result.getValue(DOCUMENT_ID)).isEqualTo(documentId);
-        assertThat(result.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
-        assertThat(result.getValue(STATUS)).isEqualTo(status);
-        assertThat(result.getSqlType(STATUS)).isEqualTo(Types.VARCHAR);
-        assertThat(result.getValue(DETAIL)).isEqualTo(detail);
-    }
+		assertThat(result.getValue(DOCUMENT_ID)).isEqualTo(documentId);
+		assertThat(result.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
+		assertThat(result.getValue(STATUS)).isEqualTo(status);
+		assertThat(result.getSqlType(STATUS)).isEqualTo(Types.VARCHAR);
+		assertThat(result.getValue(DETAIL)).isEqualTo(detail);
+	}
 
-    @Test
-    void mapToSqlParameterSourceWithoutDetail() {
-        var documentId = "someDocumentId";
-        var municipalityId = "someMunicipalityId";
-        var status = DocumentStatus.FAILED;
+	@Test
+	void mapToSqlParameterSourceWithoutDetail() {
+		var documentId = "someDocumentId";
+		var municipalityId = "someMunicipalityId";
+		var status = DocumentStatus.FAILED;
 
-        var result = dbIntegration.mapToSqlParameterSource(documentId, municipalityId, status, Optional.empty());
+		var result = dbIntegration.mapToSqlParameterSource(documentId, municipalityId, status, Optional.empty());
 
-        assertThat(result.getValue(DOCUMENT_ID)).isEqualTo(documentId);
-        assertThat(result.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
-        assertThat(result.getValue(STATUS)).isEqualTo(status);
-        assertThat(result.getSqlType(STATUS)).isEqualTo(Types.VARCHAR);
-        assertThat(result.hasValue(DETAIL)).isFalse();
-    }
+		assertThat(result.getValue(DOCUMENT_ID)).isEqualTo(documentId);
+		assertThat(result.getValue(MUNICIPALITY_ID)).isEqualTo(municipalityId);
+		assertThat(result.getValue(STATUS)).isEqualTo(status);
+		assertThat(result.getSqlType(STATUS)).isEqualTo(Types.VARCHAR);
+		assertThat(result.hasValue(DETAIL)).isFalse();
+	}
 }

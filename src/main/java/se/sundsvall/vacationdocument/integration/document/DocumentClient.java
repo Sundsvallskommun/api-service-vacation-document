@@ -16,19 +16,21 @@ import org.springframework.web.bind.annotation.RequestPart;
 import generated.se.sundsvall.document.DocumentCreateRequest;
 
 @FeignClient(
-    name = CLIENT_ID,
-    configuration = DocumentClientConfiguration.class,
-    url = "${integration.document.base-url}"
-)
+	name = CLIENT_ID,
+	configuration = DocumentClientConfiguration.class,
+	url = "${integration.document.base-url}")
 public interface DocumentClient {
 
-    @PostMapping(
-        path = "/{municipalityId}/documents",
-        consumes = { MULTIPART_FORM_DATA_VALUE },
-        produces = { ALL_VALUE, APPLICATION_PROBLEM_JSON_VALUE }
-    )
-    ResponseEntity<Void> createDocument(
-        @PathVariable("municipalityId") String municipalityId,
-        @RequestPart("document") DocumentCreateRequest document,
-        @RequestPart("documentFiles") List<DocumentMultipartFile> documentFiles);
+	@PostMapping(
+		path = "/{municipalityId}/documents",
+		consumes = {
+			MULTIPART_FORM_DATA_VALUE
+		},
+		produces = {
+			ALL_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+		})
+	ResponseEntity<Void> createDocument(
+		@PathVariable("municipalityId") String municipalityId,
+		@RequestPart("document") DocumentCreateRequest document,
+		@RequestPart("documentFiles") List<DocumentMultipartFile> documentFiles);
 }

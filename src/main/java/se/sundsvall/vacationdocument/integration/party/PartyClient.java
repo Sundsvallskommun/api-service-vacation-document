@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import generated.se.sundsvall.party.PartyType;
 
 @FeignClient(
-    name = CLIENT_ID,
-    configuration = PartyClientConfiguration.class,
-    url = "${integration.party.base-url}",
-    dismiss404 = true
-)
+	name = CLIENT_ID,
+	configuration = PartyClientConfiguration.class,
+	url = "${integration.party.base-url}",
+	dismiss404 = true)
 public interface PartyClient {
 
-    @GetMapping(
-        path = "/{municipalityId}/{type}/{legalId}/partyId",
-        produces = { TEXT_PLAIN_VALUE, APPLICATION_PROBLEM_JSON_VALUE }
-    )
-    Optional<String> getPartyId(@PathVariable("municipalityId") String municipalityId,
-        @PathVariable("type") PartyType partyType, @PathVariable("legalId") String legalId);
+	@GetMapping(
+		path = "/{municipalityId}/{type}/{legalId}/partyId",
+		produces = {
+			TEXT_PLAIN_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+		})
+	Optional<String> getPartyId(@PathVariable("municipalityId") String municipalityId,
+		@PathVariable("type") PartyType partyType, @PathVariable("legalId") String legalId);
 }

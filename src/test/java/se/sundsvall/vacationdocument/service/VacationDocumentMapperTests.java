@@ -29,30 +29,30 @@ import org.junit.jupiter.api.Test;
 
 class VacationDocumentMapperTests {
 
-    @Test
-    void testMapToRenderRequestParameters() {
-        var parameters = VacationDocumentMapper.mapToRenderRequestParameters(createOpenEDocument("someId", "someName", false));
+	@Test
+	void testMapToRenderRequestParameters() {
+		var parameters = VacationDocumentMapper.mapToRenderRequestParameters(createOpenEDocument("someId", "someName", false));
 
-        assertThat(parameters).containsKeys(EMPLOYEE_INFORMATION, MANAGER_INFORMATION);
-        assertThat(parameters.get(EMPLOYEE_INFORMATION))
-                .asInstanceOf(MAP)
-                .satisfies(employeeInformation -> {
-            assertThat(employeeInformation).containsEntry(NAME, EMPLOYEE_NAME);
-            assertThat(employeeInformation).containsEntry(EMAIL_ADDRESS, EMPLOYEE_EMAIL_ADDRESS);
-            assertThat(employeeInformation).containsEntry(PHONE_NUMBER, EMPLOYEE_PHONE_NUMBER);
-            assertThat(employeeInformation).containsEntry(MOBILE_NUMBER, EMPLOYEE_MOBILE_NUMBER);
-            assertThat(employeeInformation).containsEntry(SSN, FORMATTED_EMPLOYEE_SSN);
-            assertThat(employeeInformation).containsEntry(JOB_TITLE, EMPLOYEE_JOB_TITLE);
-            assertThat(employeeInformation).containsEntry(ORGANIZATION, EMPLOYEE_ORGANIZATION);
-        });
+		assertThat(parameters).containsKeys(EMPLOYEE_INFORMATION, MANAGER_INFORMATION);
+		assertThat(parameters.get(EMPLOYEE_INFORMATION))
+			.asInstanceOf(MAP)
+			.satisfies(employeeInformation -> {
+				assertThat(employeeInformation).containsEntry(NAME, EMPLOYEE_NAME);
+				assertThat(employeeInformation).containsEntry(EMAIL_ADDRESS, EMPLOYEE_EMAIL_ADDRESS);
+				assertThat(employeeInformation).containsEntry(PHONE_NUMBER, EMPLOYEE_PHONE_NUMBER);
+				assertThat(employeeInformation).containsEntry(MOBILE_NUMBER, EMPLOYEE_MOBILE_NUMBER);
+				assertThat(employeeInformation).containsEntry(SSN, FORMATTED_EMPLOYEE_SSN);
+				assertThat(employeeInformation).containsEntry(JOB_TITLE, EMPLOYEE_JOB_TITLE);
+				assertThat(employeeInformation).containsEntry(ORGANIZATION, EMPLOYEE_ORGANIZATION);
+			});
 
-        assertThat(parameters.get(MANAGER_INFORMATION))
-            .asInstanceOf(MAP)
-            .satisfies(managerInformation -> {
-                assertThat(managerInformation).containsEntry(NAME, MANAGER_NAME);
-                assertThat(managerInformation).containsEntry(USERNAME, MANAGER_USERNAME);
-                assertThat(managerInformation).containsEntry(JOB_TITLE, MANAGER_JOB_TITLE);
-                assertThat(managerInformation).containsEntry(ORGANIZATION, MANAGER_ORGANIZATION);
-            });
-    }
+		assertThat(parameters.get(MANAGER_INFORMATION))
+			.asInstanceOf(MAP)
+			.satisfies(managerInformation -> {
+				assertThat(managerInformation).containsEntry(NAME, MANAGER_NAME);
+				assertThat(managerInformation).containsEntry(USERNAME, MANAGER_USERNAME);
+				assertThat(managerInformation).containsEntry(JOB_TITLE, MANAGER_JOB_TITLE);
+				assertThat(managerInformation).containsEntry(ORGANIZATION, MANAGER_ORGANIZATION);
+			});
+	}
 }

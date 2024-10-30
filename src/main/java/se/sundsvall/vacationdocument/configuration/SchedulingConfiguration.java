@@ -17,23 +17,23 @@ import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 @EnableSchedulerLock(defaultLockAtMostFor = "PT2M")
 class SchedulingConfiguration {
 
-    @Bean
-    LockProvider lockProvider(final DataSource dataSource) {
-        return new JdbcTemplateLockProvider(
-            JdbcTemplateLockProvider.Configuration.builder()
-                .usingDbTime()
-                .withJdbcTemplate(new JdbcTemplate(dataSource))
-                .build());
-    }
+	@Bean
+	LockProvider lockProvider(final DataSource dataSource) {
+		return new JdbcTemplateLockProvider(
+			JdbcTemplateLockProvider.Configuration.builder()
+				.usingDbTime()
+				.withJdbcTemplate(new JdbcTemplate(dataSource))
+				.build());
+	}
 
-    @Bean
-    ThreadPoolTaskExecutor asyncTaskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(25);
-        executor.setThreadNamePrefix("AsyncTask-");
-        executor.initialize();
-        return executor;
-    }
+	@Bean
+	ThreadPoolTaskExecutor asyncTaskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(5);
+		executor.setMaxPoolSize(10);
+		executor.setQueueCapacity(25);
+		executor.setThreadNamePrefix("AsyncTask-");
+		executor.initialize();
+		return executor;
+	}
 }
