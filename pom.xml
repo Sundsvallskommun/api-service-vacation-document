@@ -14,7 +14,7 @@
 	<name>api-service-vacation-document</name>
 
 	<properties>
-		<shedlock.version>5.16.0</shedlock.version>
+		<shedlock.version>6.0.1</shedlock.version>
 		<xsoup.version>0.3.7</xsoup.version>
 		<jilt.version>1.6.1</jilt.version>
 
