@@ -8,7 +8,11 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Map;
-
+import net.javacrumbs.shedlock.core.DefaultLockManager;
+import net.javacrumbs.shedlock.core.DefaultLockingTaskExecutor;
+import net.javacrumbs.shedlock.core.LockConfiguration;
+import net.javacrumbs.shedlock.core.LockProvider;
+import net.javacrumbs.shedlock.spring.LockableTaskScheduler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,14 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
-
 import se.sundsvall.vacationdocument.integration.opene.OpenEClientProperties;
-
-import net.javacrumbs.shedlock.core.DefaultLockManager;
-import net.javacrumbs.shedlock.core.DefaultLockingTaskExecutor;
-import net.javacrumbs.shedlock.core.LockConfiguration;
-import net.javacrumbs.shedlock.core.LockProvider;
-import net.javacrumbs.shedlock.spring.LockableTaskScheduler;
 
 @ExtendWith(MockitoExtension.class)
 class VacationDocumentSchedulerTests {

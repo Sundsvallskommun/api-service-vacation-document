@@ -9,7 +9,6 @@ import static se.sundsvall.vacationdocument.integration.opene.util.XPathUtil.eva
 import static se.sundsvall.vacationdocument.integration.opene.util.XPathUtil.getString;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 

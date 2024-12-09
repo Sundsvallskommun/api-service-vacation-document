@@ -5,15 +5,13 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static se.sundsvall.vacationdocument.integration.document.DocumentClientConfiguration.CLIENT_ID;
 
+import generated.se.sundsvall.document.DocumentCreateRequest;
 import java.util.List;
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
-
-import generated.se.sundsvall.document.DocumentCreateRequest;
 
 @FeignClient(
 	name = CLIENT_ID,

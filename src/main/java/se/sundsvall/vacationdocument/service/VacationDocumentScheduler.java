@@ -5,18 +5,15 @@ import static java.time.Duration.ZERO;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Optional;
-
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.support.CronTrigger;
-import org.springframework.stereotype.Component;
-
-import se.sundsvall.vacationdocument.integration.opene.OpenEClientProperties;
-
 import net.javacrumbs.shedlock.core.DefaultLockManager;
 import net.javacrumbs.shedlock.core.DefaultLockingTaskExecutor;
 import net.javacrumbs.shedlock.core.LockConfiguration;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.spring.LockableTaskScheduler;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.stereotype.Component;
+import se.sundsvall.vacationdocument.integration.opene.OpenEClientProperties;
 
 @Component
 class VacationDocumentScheduler {

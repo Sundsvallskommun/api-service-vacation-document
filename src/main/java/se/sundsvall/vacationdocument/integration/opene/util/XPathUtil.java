@@ -10,14 +10,11 @@ import static org.jsoup.parser.Parser.xmlParser;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.core.annotation.AnnotationUtils;
-
 import se.sundsvall.vacationdocument.integration.opene.util.annotation.XPath;
-
 import us.codecraft.xsoup.Xsoup;
 
 public final class XPathUtil {

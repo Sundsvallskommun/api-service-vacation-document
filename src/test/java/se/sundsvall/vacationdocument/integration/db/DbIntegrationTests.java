@@ -17,7 +17,6 @@ import static se.sundsvall.vacationdocument.model.DocumentStatus.PROCESSING;
 import java.sql.Types;
 import java.util.Map;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +26,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import se.sundsvall.vacationdocument.model.DocumentStatus;
 
 @ExtendWith(MockitoExtension.class)

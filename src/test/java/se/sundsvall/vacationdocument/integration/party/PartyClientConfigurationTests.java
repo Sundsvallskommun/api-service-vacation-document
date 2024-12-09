@@ -19,7 +19,6 @@ import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.test.context.ActiveProfiles;
-
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 import se.sundsvall.vacationdocument.Application;

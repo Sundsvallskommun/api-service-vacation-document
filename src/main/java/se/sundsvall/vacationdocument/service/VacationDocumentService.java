@@ -9,22 +9,19 @@ import static se.sundsvall.vacationdocument.model.DocumentStatus.PROCESSING;
 import static se.sundsvall.vacationdocument.service.VacationDocumentMapper.mapToDocumentCreateRequest;
 import static se.sundsvall.vacationdocument.service.VacationDocumentMapper.mapToRenderRequestParameters;
 
+import generated.se.sundsvall.templating.RenderRequest;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import se.sundsvall.vacationdocument.integration.db.DbIntegration;
 import se.sundsvall.vacationdocument.integration.document.DocumentClient;
 import se.sundsvall.vacationdocument.integration.document.DocumentMultipartFile;
 import se.sundsvall.vacationdocument.integration.opene.OpenEIntegration;
 import se.sundsvall.vacationdocument.integration.party.PartyClient;
 import se.sundsvall.vacationdocument.integration.templating.TemplatingClient;
-
-import generated.se.sundsvall.templating.RenderRequest;
 
 @Service
 class VacationDocumentService {
