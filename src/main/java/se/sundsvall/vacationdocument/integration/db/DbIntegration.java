@@ -6,13 +6,11 @@ import static java.util.Optional.ofNullable;
 import java.sql.Types;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
-
 import se.sundsvall.vacationdocument.model.DocumentStatus;
 
 @Component

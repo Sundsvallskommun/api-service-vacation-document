@@ -16,17 +16,15 @@ import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.SS
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.TIMESTAMP;
 import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.USERNAME;
 
+import generated.se.sundsvall.document.Confidentiality;
+import generated.se.sundsvall.document.DocumentCreateRequest;
+import generated.se.sundsvall.document.DocumentMetadata;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import se.sundsvall.vacationdocument.integration.opene.OpenEDocument;
-
-import generated.se.sundsvall.document.Confidentiality;
-import generated.se.sundsvall.document.DocumentCreateRequest;
-import generated.se.sundsvall.document.DocumentMetadata;
 
 final class VacationDocumentMapper {
 

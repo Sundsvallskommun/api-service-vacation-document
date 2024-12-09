@@ -30,10 +30,14 @@ import static se.sundsvall.vacationdocument.service.VacationDocumentConstants.US
 import static se.sundsvall.vacationdocument.service.VacationDocumentMapper.employeeKey;
 import static se.sundsvall.vacationdocument.service.VacationDocumentMapper.managerKey;
 
+import generated.se.sundsvall.document.Confidentiality;
+import generated.se.sundsvall.document.DocumentCreateRequest;
+import generated.se.sundsvall.document.DocumentMetadata;
+import generated.se.sundsvall.templating.RenderRequest;
+import generated.se.sundsvall.templating.RenderResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -42,7 +46,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-
 import se.sundsvall.dept44.test.extension.ResourceLoaderExtension;
 import se.sundsvall.vacationdocument.integration.db.DbIntegration;
 import se.sundsvall.vacationdocument.integration.document.DocumentClient;
@@ -51,12 +54,6 @@ import se.sundsvall.vacationdocument.integration.opene.OpenEIntegration;
 import se.sundsvall.vacationdocument.integration.party.PartyClient;
 import se.sundsvall.vacationdocument.integration.templating.TemplatingClient;
 import se.sundsvall.vacationdocument.model.DocumentStatus;
-
-import generated.se.sundsvall.document.Confidentiality;
-import generated.se.sundsvall.document.DocumentCreateRequest;
-import generated.se.sundsvall.document.DocumentMetadata;
-import generated.se.sundsvall.templating.RenderRequest;
-import generated.se.sundsvall.templating.RenderResponse;
 
 @ExtendWith({
 	ResourceLoaderExtension.class, MockitoExtension.class

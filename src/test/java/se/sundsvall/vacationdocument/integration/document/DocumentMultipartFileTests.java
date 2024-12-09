@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 
 import java.io.File;
-
 import org.junit.jupiter.api.Test;
 
 class DocumentMultipartFileTests {
